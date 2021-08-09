@@ -1,12 +1,13 @@
-import {Flex, Heading} from '@chakra-ui/react'
+import {Flex, Heading, Box} from '@chakra-ui/react'
 
-import {Nav} from 'components'
+import {Nav, Collections} from 'components'
 
 export default function Home() {
   return (
     <Flex>
       <Nav />
-      <Heading>Initial</Heading>
+      <Collections />
+      <Box></Box>
     </Flex>
   )
 }

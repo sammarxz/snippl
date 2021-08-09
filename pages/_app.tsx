@@ -11,7 +11,7 @@ function App({Component, pageProps}: AppProps) {
         <title>CodeSnippets</title>
       </Head>
       <ChakraProvider theme={theme}>
-        <Box bg="gray.900" color="gray.500" h="100vh">
+        <Box bg="black" color="whiteAlpha.800" h="100vh">
           <Component {...pageProps} />
         </Box>
       </ChakraProvider>
