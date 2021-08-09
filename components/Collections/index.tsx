@@ -21,6 +21,11 @@ type collectionType = {
 
 type collectionsType = collectionType[]
 
+const variants = {
+  open: {rotate: '0deg'},
+  close: {rotate: '45deg'},
+}
+
 export function Collections({...rest}) {
   const [collections, setCollections] = useState<collectionsType | []>([])
   const [newCollection, setNewCollection] = useState('')
@@ -104,7 +109,7 @@ export function Collections({...rest}) {
       py={6}
       {...rest}
     >
-      <AnimateSharedLayout type="crossfade">
+      <AnimateSharedLayout>
         <Stack spacing={5}>
           <Flex alignItems="center" justifyContent="space-between">
             <Heading
@@ -119,9 +124,14 @@ export function Collections({...rest}) {
                 </Box>
               </Stack>
             </Heading>
-            <button onClick={setShowNewCollection.toggle}>
+            <motion.button
+              onClick={setShowNewCollection.toggle}
+              variants={variants}
+              animate={showNewCollection ? 'close' : 'open'}
+              layout
+            >
               <Icon as={IoAdd} color="whiteAlpha.900" />
-            </button>
+            </motion.button>
           </Flex>
           <AnimatePresence>
             {showNewCollection && (

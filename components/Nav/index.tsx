@@ -22,7 +22,7 @@ export function Nav({...rest}) {
         </Link>
       </Flex>
       <Box position="absolute" left="0" right="0" bottom="6" textAlign="center">
-        <Avatar size="sm" name="Sam Marxz" src="https://bit.ly/sage-adebayo" />
+        <Avatar size="sm" name="Sam Marxz" />
       </Box>
     </Box>
   )
