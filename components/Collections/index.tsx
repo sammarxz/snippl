@@ -1,4 +1,4 @@
-import {useState, useEffect, useMemo} from 'react'
+import {useState, useEffect, useCallback} from 'react'
 import {motion, AnimateSharedLayout, AnimatePresence} from 'framer-motion'
 import {
   Box,
@@ -9,7 +9,8 @@ import {
   Input,
   useBoolean,
 } from '@chakra-ui/react'
-import {IoFolder, IoAdd} from 'react-icons/io5'
+import {IoFolder} from 'react-icons/io5'
+import {GoPlus} from 'react-icons/go'
 
 import {Collection} from 'components'
 
@@ -66,7 +67,7 @@ export function Collections({...rest}) {
 
   function handleCollectionFormSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
-    const colorIndex = Math.round(Math.random() * (colors.length - 0))
+    const colorIndex = Math.round(Math.random() * (colors.length - 1))
     const color = colors[colorIndex]
     const newCollectionToAdd = {
       title: newCollection,
@@ -97,15 +98,27 @@ export function Collections({...rest}) {
     setCollections(newCollectionsList)
   }
 
+  // function handleDeleteCollection(title: string) {
+  //   // const newCollectionsList = collections.filter(
+  //   //   collection => collection.title !== title,
+  //   // )
+  //   // console.log(title)
+  //   // console.log(newCollectionsList)
+  //   setCollections(state =>
+  //     state.filter(collection => collection.title !== title),
+  //   )
+  //   console.log(collections)
+  // }
+
   return (
     <Box
       as="nav"
       bg="whiteAlpha.200"
-      borderRight="2px"
-      borderRightColor="black"
-      w={72}
+      borderRight="1px"
+      borderRightColor="whiteAlpha.200"
+      w={'23%'}
       h="100vh"
-      px={8}
+      px={5}
       py={6}
       {...rest}
     >
@@ -117,8 +130,8 @@ export function Collections({...rest}) {
               textTransform="uppercase"
               letterSpacing="1px"
             >
-              <Stack spacing="8px" isInline>
-                <Icon as={IoFolder} textColor="whiteAlpha.500" ml={1} />
+              <Stack spacing="8px" isInline alignItems="center">
+                <Icon as={IoFolder} textColor="whiteAlpha.500" />
                 <Box as="span" textColor="whiteAlpha.700">
                   Collections
                 </Box>
@@ -129,8 +142,9 @@ export function Collections({...rest}) {
               variants={variants}
               animate={showNewCollection ? 'close' : 'open'}
               layout
+              style={{padding: 0}}
             >
-              <Icon as={IoAdd} color="whiteAlpha.900" />
+              <Icon as={GoPlus} color="whiteAlpha.800" />
             </motion.button>
           </Flex>
           <AnimatePresence>
@@ -160,7 +174,7 @@ export function Collections({...rest}) {
             )}
           </AnimatePresence>
           <AnimatePresence initial={false}>
-            <Stack>
+            <Stack spacing={1}>
               {collections.map(({title, color, isActive}) => (
                 <motion.button
                   initial={{opacity: 0}}

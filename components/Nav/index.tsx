@@ -7,8 +7,8 @@ export function Nav({...rest}) {
     <Box
       as="nav"
       bg="whiteAlpha.200"
-      borderRight="2px"
-      borderRightColor="black"
+      borderRight="1px"
+      borderRightColor="whiteAlpha.200"
       w={16}
       h="100vh"
       position="relative"
