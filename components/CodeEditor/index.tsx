@@ -7,9 +7,9 @@ import {
   Textarea,
 } from '@chakra-ui/react'
 
-export function CodeEditor() {
+export function CodeEditor({...rest}) {
   return (
-    <Box px={8} py={4} flex="1">
+    <Box as="section" px={8} py={4} {...rest}>
       <Stack>
         <Editable
           defaultValue="Snippet Title"

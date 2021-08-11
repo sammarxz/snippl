@@ -112,12 +112,9 @@ export function Collections({...rest}) {
 
   return (
     <Box
-      as="nav"
-      bg="whiteAlpha.50"
+      as="aside"
       borderRight="1px"
       borderRightColor="whiteAlpha.200"
-      w={'23%'}
-      h="100vh"
       px={5}
       py={6}
       {...rest}
@@ -165,6 +162,7 @@ export function Collections({...rest}) {
                   _placeholder={{color: 'whiteAlpha.400'}}
                   py={1}
                   px={3}
+                  mt={1}
                   borderRadius="base"
                   placeholder="Collection Title"
                   onChange={e => setNewCollection(e.target.value)}
@@ -174,7 +172,7 @@ export function Collections({...rest}) {
             )}
           </AnimatePresence>
           <AnimatePresence initial={false}>
-            <Stack spacing={1}>
+            <Stack spacing={1} mt={1}>
               {collections.map(({title, color, isActive}) => (
                 <motion.button
                   initial={{opacity: 0}}
