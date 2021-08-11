@@ -12,6 +12,7 @@ export function Snippets({...rest}) {
       borderRightColor="whiteAlpha.200"
       px={5}
       py={6}
+      overflowY="auto"
       {...rest}
     >
       <Stack spacing={1}>

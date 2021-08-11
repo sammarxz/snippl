@@ -117,6 +117,7 @@ export function Collections({...rest}) {
       borderRightColor="whiteAlpha.200"
       px={5}
       py={6}
+      overflowY="auto"
       {...rest}
     >
       <AnimateSharedLayout>

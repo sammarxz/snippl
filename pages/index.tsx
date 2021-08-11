@@ -1,6 +1,6 @@
-import {Grid, Heading, Box} from '@chakra-ui/react'
+import {Grid} from '@chakra-ui/react'
 
-import {Header, Collections, Nav, Snippets, CodeEditor} from 'components'
+import {Header, Collections, Nav, Snippets, Editor} from 'components'
 
 export default function Home() {
   return (
@@ -12,12 +12,17 @@ export default function Home() {
        "header collections nav nav"
        "header collections snippets editor"
       `}
+      position="fixed"
+      left={0}
+      right={0}
+      top={0}
+      bottom={0}
     >
       <Header gridArea="header" />
       <Collections gridArea="collections" />
       <Nav gridArea="nav" />
       <Snippets gridArea="snippets" />
-      <CodeEditor gridArea="editor" />
+      <Editor gridArea="editor" />
     </Grid>
   )
 }
