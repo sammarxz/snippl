@@ -17,7 +17,7 @@ export function Snippet({
 }: SnippetProps) {
   return (
     <Stack
-      bg={isSelected ? 'whiteAlpha.50' : 'transparent'}
+      bg={isSelected ? 'whiteAlpha.200' : 'transparent'}
       transition="ease"
       transitionProperty="all"
       transitionDuration=".6s"

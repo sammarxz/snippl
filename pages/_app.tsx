@@ -4,6 +4,8 @@ import {ChakraProvider, Box} from '@chakra-ui/react'
 
 import {theme} from '../styles/theme'
 
+import 'styles/highlight.css'
+
 function App({Component, pageProps}: AppProps) {
   return (
     <>

@@ -18,7 +18,7 @@ export const Collection = memo(function Collection({
 
   return (
     <Stack
-      bg={isActive ? 'whiteAlpha.50' : 'transparent'}
+      bg={isActive ? 'whiteAlpha.200' : 'transparent'}
       transition="ease"
       transitionProperty="all"
       transitionDuration=".6s"

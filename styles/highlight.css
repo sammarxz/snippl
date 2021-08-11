@@ -1,0 +1,56 @@
+.editor {
+  font-size: 13px;
+  line-height: 19px;
+}
+
+.editor > textarea {
+  outline: none;
+  padding-left: 36px !important;
+}
+
+.editor > pre {
+  padding-left: 36px !important;
+}
+
+::selection {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+::selection:window-inactive {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+code[class*='language-'],
+pre[class*='language-'] {
+  color: currentColor;
+  background: 0 0;
+  text-align: left;
+  white-space: pre-wrap;
+  word-spacing: normal;
+  word-break: break-word;
+  word-wrap: normal;
+  line-height: inherit;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+  overflow: visible;
+}
+
+pre[class*='language-'] > .token-line {
+  position: relative;
+}
+
+.line-number {
+  user-select: none;
+  color: rgba(255, 255, 255, 0.2);
+  display: inline-block;
+  width: 2em;
+  position: absolute;
+  text-align: right;
+  left: -3em;
+  pointer-events: all;
+}

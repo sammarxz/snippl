@@ -163,7 +163,6 @@ export function Collections({...rest}) {
                   _placeholder={{color: 'whiteAlpha.400'}}
                   py={1}
                   px={3}
-                  mt={1}
                   borderRadius="base"
                   placeholder="Collection Title"
                   onChange={e => setNewCollection(e.target.value)}

@@ -11,7 +11,7 @@ export function Header({...rest}) {
       position="relative"
       {...rest}
     >
-      <Flex mt={1} h="16" alignItems="center" mx="auto" justifyContent="center">
+      <Flex h={16} mt={1} alignItems="center" mx="auto" justifyContent="center">
         <Link href="/">
           <a>
             <Icon as={FiBox} w={8} h={8} />

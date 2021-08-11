@@ -14,10 +14,9 @@ export function Nav({...rest}) {
     >
       <Search />
       <Stack isInline spacing={4} alignItems="center" mr={4}>
-        <Button colorScheme="whiteAlpha" bg="whiteAlpha.300">
+        <Button colorScheme="whiteAlpha" bg="whiteAlpha.300" size="sm">
           Create Snippet
         </Button>
-        <Avatar name="Samuel Marques" size="sm" />
       </Stack>
     </Flex>
   )
