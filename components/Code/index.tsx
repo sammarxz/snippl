@@ -138,7 +138,7 @@ export function Code() {
           icon={<IoIosCopy />}
         />
       </Flex>
-      <Box px={3} pb={3}>
+      <Box px={3} pb={4}>
         <Editor
           value={code}
           onValueChange={setCode}
