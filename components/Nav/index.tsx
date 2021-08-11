@@ -6,7 +6,7 @@ export function Nav({...rest}) {
   return (
     <Box
       as="nav"
-      bg="whiteAlpha.200"
+      bg="whiteAlpha.50"
       borderRight="1px"
       borderRightColor="whiteAlpha.200"
       w={16}

@@ -17,14 +17,15 @@ export function Snippet({
 }: SnippetProps) {
   return (
     <Stack
-      bg={isSelected ? 'blackAlpha.700' : 'transparent'}
+      bg={isSelected ? 'whiteAlpha.50' : 'transparent'}
       transition="ease"
-      transitionProperty="background"
+      transitionProperty="all"
       transitionDuration=".6s"
       px={5}
       py={4}
       borderRadius="md"
       opacity={isSelected ? 1 : 0.4}
+      _hover={{opacity: 1}}
     >
       <Heading fontSize="lg" textColor="whiteAlpha.800">
         {title}

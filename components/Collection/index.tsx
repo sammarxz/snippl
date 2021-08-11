@@ -18,14 +18,15 @@ export const Collection = memo(function Collection({
 
   return (
     <Stack
-      bg={isActive ? 'blackAlpha.700' : 'transparent'}
+      bg={isActive ? 'whiteAlpha.50' : 'transparent'}
       transition="ease"
-      transitionProperty="background"
+      transitionProperty="all"
       transitionDuration=".6s"
       px={3}
       py={2}
       borderRadius="base"
       opacity={isActive ? 1 : 0.4}
+      _hover={{opacity: 1}}
     >
       <Flex alignItems="center" justifyContent="space-between">
         <Stack spacing={3} alignItems="center" isInline>

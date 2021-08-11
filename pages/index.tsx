@@ -1,6 +1,6 @@
 import {Flex, Heading, Box} from '@chakra-ui/react'
 
-import {Nav, Collections, Snippets} from 'components'
+import {Nav, Collections, Snippets, CodeEditor} from 'components'
 
 export default function Home() {
   return (
@@ -8,7 +8,7 @@ export default function Home() {
       <Nav />
       <Collections />
       <Snippets />
-      <Box></Box>
+      <CodeEditor />
     </Flex>
   )
 }

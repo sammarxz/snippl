@@ -8,9 +8,9 @@ export function Snippets() {
   return (
     <Box
       as="nav"
-      bg="whiteAlpha.100"
-      borderRight="2px"
-      borderRightColor="black"
+      bg="whiteAlpha.50"
+      borderRight="1px"
+      borderRightColor="whiteAlpha.200"
       w={'28%'}
       h="100vh"
       px={5}
