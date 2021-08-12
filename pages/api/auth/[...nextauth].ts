@@ -34,10 +34,23 @@ export default NextAuth({
       profile.email = sortedEmails[0].email
 
       try {
-        await fauna.query(
-          q.Create(q.Collection('users'), {data: {email: profile.email}}),
-        )
-        return true
+        if (profile.email) {
+          await fauna.query(
+            q.If(
+              q.Not(
+                q.Exists(
+                  q.Match(q.Index('get_by_email'), q.Casefold(profile.email)),
+                ),
+              ),
+              q.Create(q.Collection('users'), {data: {email: profile.email}}),
+              q.Get(
+                q.Match(q.Index('get_by_email'), q.Casefold(profile.email)),
+              ),
+            ),
+          )
+          return true
+        }
+        return false
       } catch {
         return false
       }
