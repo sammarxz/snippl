@@ -10,10 +10,10 @@ function App({Component, pageProps}: AppProps) {
   return (
     <>
       <Head>
-        <title>CodeSnippets</title>
+        <title>Snippl - Code Snippet Library for free</title>
       </Head>
       <ChakraProvider theme={theme}>
-        <Box bg="black" color="whiteAlpha.800" h="100vh">
+        <Box bg="black" color="whiteAlpha.700">
           <Component {...pageProps} />
         </Box>
       </ChakraProvider>
