@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import {signIn, signOut, useSession} from 'next-auth/client'
 import {
   Container,
   Box,
@@ -8,13 +9,20 @@ import {
   Stack,
   Heading,
   Text,
+  Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from '@chakra-ui/react'
 import {FaGithub} from 'react-icons/fa'
 
 export default function Home() {
+  const [session] = useSession()
+
   return (
     <>
-      <Container maxW="container.md">
+      <Container maxW="container.md" fontFamily="body">
         <Flex
           as="nav"
           py={8}
@@ -31,14 +39,40 @@ export default function Home() {
               />
             </a>
           </Link>
-          <Button
-            colorScheme="purple"
-            bg="purple.300"
-            textColor="blackAlpha.900"
-            leftIcon={<FaGithub />}
-          >
-            Sign in with Github
-          </Button>
+          {session ? (
+            <Menu matchWidth placement="bottom-end">
+              <MenuButton>
+                <Avatar
+                  name={session!.user!.name || 'user'}
+                  src={session!.user!.image || ''}
+                  size="sm"
+                />
+              </MenuButton>
+              <MenuList bg="whiteAlpha.100" borderColor="whiteAlpha.200">
+                <MenuItem
+                  textColor="whiteAlpha.600"
+                  _hover={{
+                    backgroundColor: 'transparent',
+                    color: 'whiteAlpha.700',
+                  }}
+                  _focus={{backgroundColor: 'transparent'}}
+                  onClick={signOut}
+                >
+                  Sign Out
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          ) : (
+            <Button
+              colorScheme="purple"
+              bg="purple.300"
+              textColor="blackAlpha.900"
+              leftIcon={<FaGithub />}
+              onClick={() => signIn('github')}
+            >
+              Sign in with Github
+            </Button>
+          )}
         </Flex>
         <Stack
           as="header"

@@ -1,11 +1,10 @@
 import {extendTheme} from '@chakra-ui/react'
 
 export const theme = extendTheme({
-  typography: {
-    fonts: {
-      body: 'IBM Plex Sans, system-ui, sans-serif',
-      mono: 'IBM Plex Mono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-    },
+  fonts: {
+    heading: 'IBM Plex Sans, system-ui, sans-serif',
+    body: 'IBM Plex Sans, system-ui, sans-serif',
+    mono: 'IBM Plex Mono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
   },
   colors: {
     brand: {

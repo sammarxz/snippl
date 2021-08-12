@@ -1,6 +1,7 @@
 import type {AppProps} from 'next/app'
 import Head from 'next/head'
 import {ChakraProvider, Box} from '@chakra-ui/react'
+import {Provider as NextAuthProvider} from 'next-auth/client'
 
 import {theme} from '../styles/theme'
 
@@ -12,11 +13,13 @@ function App({Component, pageProps}: AppProps) {
       <Head>
         <title>Snippl - Code Snippet Library for free</title>
       </Head>
-      <ChakraProvider theme={theme}>
-        <Box bg="black" color="whiteAlpha.700">
-          <Component {...pageProps} />
-        </Box>
-      </ChakraProvider>
+      <NextAuthProvider session={pageProps.session}>
+        <ChakraProvider theme={theme}>
+          <Box bg="black" color="whiteAlpha.700">
+            <Component {...pageProps} />
+          </Box>
+        </ChakraProvider>
+      </NextAuthProvider>
     </>
   )
 }
