@@ -23,7 +23,6 @@ export function Editor({...rest}) {
         <EditableInput />
       </Editable>
       <Textarea
-        isFullWidth
         isRequired
         variant="unstyled"
         fontFamily="mono"

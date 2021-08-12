@@ -56,7 +56,7 @@ export default function Home() {
                     color: 'whiteAlpha.700',
                   }}
                   _focus={{backgroundColor: 'transparent'}}
-                  onClick={signOut}
+                  onClick={() => signOut()}
                 >
                   Sign Out
                 </MenuItem>
@@ -68,7 +68,9 @@ export default function Home() {
               bg="purple.300"
               textColor="blackAlpha.900"
               leftIcon={<FaGithub />}
-              onClick={() => signIn('github')}
+              onClick={() =>
+                signIn('github', {callbackUrl: 'http://localhost:3000/app'})
+              }
             >
               Sign in with Github
             </Button>
