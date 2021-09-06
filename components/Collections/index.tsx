@@ -1,4 +1,5 @@
 import {useState, useEffect, useCallback} from 'react'
+import {SupabaseClient} from '@supabase/supabase-js'
 import {motion, AnimateSharedLayout, AnimatePresence} from 'framer-motion'
 import {
   Box,
@@ -14,8 +15,10 @@ import {GoPlus} from 'react-icons/go'
 
 import {Collection} from 'components'
 
+import useSupabase from 'utils/useSupabase'
+
 type collectionType = {
-  title: string
+  name: string
   color: string
   isActive: boolean
 }
@@ -27,50 +30,55 @@ const variants = {
   close: {rotate: '45deg'},
 }
 
+const colors = [
+  'gray',
+  'red',
+  'orange',
+  'yellow',
+  'green',
+  'teal',
+  'blue',
+  'cyan',
+  'purple',
+  'pink',
+]
+
 export function Collections({...rest}) {
+  const {session, supabase} = useSupabase()
+  const [showNewCollection, setShowNewCollection] = useBoolean()
   const [collections, setCollections] = useState<collectionsType | []>([])
   const [newCollection, setNewCollection] = useState('')
-  const colors = [
-    'gray',
-    'red',
-    'orange',
-    'yellow',
-    'green',
-    'teal',
-    'blue',
-    'cyan',
-    'purple',
-    'pink',
-  ]
-  const [showNewCollection, setShowNewCollection] = useBoolean()
 
   useEffect(() => {
-    const collectionsList = [
-      {
-        title: 'Getting Started',
-        color: 'green',
-        isActive: true,
-      },
-      {
-        title: 'Elixir',
-        color: 'purple',
-        isActive: false,
-      },
-      {
-        title: 'Docker',
-        color: 'cyan',
-        isActive: false,
-      },
-    ]
-    setCollections(collectionsList)
-  }, [])
+    const getCollections = async () => {
+      let {data: collection} = await supabase.from('collection').select('*')
+      if (collection) {
+        const updatedCollections = collection.map(item => {
+          return {
+            ...item,
+            isActive: false,
+          }
+        })
 
-  function handleCollectionFormSubmit(e: React.SyntheticEvent) {
+        updatedCollections[0].isActive = true
+
+        setCollections(updatedCollections)
+        return
+      }
+
+      setCollections([])
+    }
+
+    getCollections()
+  }, [supabase])
+
+  async function handleCollectionFormSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
+
     const colorIndex = Math.round(Math.random() * (colors.length - 1))
     const color = colors[colorIndex]
     const newCollectionToAdd = {
-      title: newCollection,
+      name: newCollection,
       color,
       isActive: true,
     }
@@ -80,14 +88,22 @@ export function Collections({...rest}) {
     })
 
     setCollections([...newCollectionsList, newCollectionToAdd])
+    await supabase.from('collection').insert([
+      {
+        name: newCollection,
+        color,
+        user_id: session?.user?.id,
+      },
+    ])
+
     setNewCollection('')
     setShowNewCollection.off()
   }
 
-  function handleSetActiveCollection(title: string) {
+  function handleSetActiveCollection(name: string) {
     const newCollectionsList = collections.map(collection => {
       collection.isActive = false
-      if (collection.title === title) {
+      if (collection.name === name) {
         collection.isActive = true
       }
       return {
@@ -174,15 +190,15 @@ export function Collections({...rest}) {
           </AnimatePresence>
           <AnimatePresence initial={false}>
             <Stack spacing={1} mt={1}>
-              {collections.map(({title, color, isActive}) => (
+              {collections.map(({name, color, isActive}) => (
                 <motion.button
                   initial={{opacity: 0}}
                   animate={{opacity: 1}}
-                  key={title}
+                  key={name}
                   layout
-                  onClick={() => handleSetActiveCollection(title)}
+                  onClick={() => handleSetActiveCollection(name)}
                 >
-                  <Collection title={title} color={color} isActive={isActive} />
+                  <Collection title={name} color={color} isActive={isActive} />
                 </motion.button>
               ))}
             </Stack>

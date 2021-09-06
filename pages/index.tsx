@@ -30,7 +30,9 @@ export default function Home({session, supabase}: HomeProps) {
     setLoggedIn(!!session)
   }, [session])
 
-  console.log(session.user)
+  const logOut = async () => {
+    await supabase.auth.signOut()
+  }
 
   return (
     <>
@@ -57,12 +59,12 @@ export default function Home({session, supabase}: HomeProps) {
                 <Box as="span" mr={4}>
                   Hello,{' '}
                   <Box as="span" color="white" fontWeight="semibold">
-                    {session.user?.user_metadata.user_name}
+                    {session?.user?.user_metadata.user_name}
                   </Box>
                 </Box>
                 <Avatar
-                  name={session.user?.user_metadata.user_name}
-                  src={session.user?.user_metadata.avatar_url}
+                  name={session?.user?.user_metadata.user_name}
+                  src={session?.user?.user_metadata.avatar_url}
                   size="sm"
                 />
               </MenuButton>
@@ -74,6 +76,7 @@ export default function Home({session, supabase}: HomeProps) {
                     color: 'whiteAlpha.700',
                   }}
                   _focus={{backgroundColor: 'transparent'}}
+                  onClick={logOut}
                 >
                   Sign Out
                 </MenuItem>
