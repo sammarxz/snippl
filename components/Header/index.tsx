@@ -7,6 +7,7 @@ export function Header({...rest}) {
     <Box
       as="header"
       borderRight="1px"
+      bg="whiteAlpha.50"
       borderRightColor="whiteAlpha.200"
       position="relative"
       {...rest}

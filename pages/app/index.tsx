@@ -5,7 +5,7 @@ import {Header, Collections, Nav, Snippets, Editor} from 'components'
 export default function App() {
   return (
     <Grid
-      bg="black"
+      bg="bg.900"
       h="100vh"
       templateColumns="72px 1.5fr 2fr 3fr"
       gridTemplateRows="72px auto"

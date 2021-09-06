@@ -1,11 +1,11 @@
+import {useEffect, useState} from 'react'
+import {Session, SupabaseClient} from '@supabase/supabase-js'
 import Image from 'next/image'
 import Link from 'next/link'
-import {signIn, signOut, useSession} from 'next-auth/client'
 import {
   Container,
   Box,
   Flex,
-  Button,
   Stack,
   Heading,
   Text,
@@ -15,10 +15,22 @@ import {
   MenuList,
   MenuItem,
 } from '@chakra-ui/react'
-import {FaGithub} from 'react-icons/fa'
 
-export default function Home() {
-  const [session] = useSession()
+import {Auth} from 'components'
+
+type HomeProps = {
+  session: Session
+  supabase: SupabaseClient
+}
+
+export default function Home({session, supabase}: HomeProps) {
+  const [loggedIn, setLoggedIn] = useState(false)
+
+  useEffect(() => {
+    setLoggedIn(!!session)
+  }, [session])
+
+  console.log(session.user)
 
   return (
     <>
@@ -39,12 +51,18 @@ export default function Home() {
               />
             </a>
           </Link>
-          {session ? (
+          {loggedIn ? (
             <Menu matchWidth placement="bottom-end">
               <MenuButton>
+                <Box as="span" mr={4}>
+                  Hello,{' '}
+                  <Box as="span" color="white" fontWeight="semibold">
+                    {session.user?.user_metadata.user_name}
+                  </Box>
+                </Box>
                 <Avatar
-                  name={session!.user!.name || 'user'}
-                  src={session!.user!.image || ''}
+                  name={session.user?.user_metadata.user_name}
+                  src={session.user?.user_metadata.avatar_url}
                   size="sm"
                 />
               </MenuButton>
@@ -56,24 +74,13 @@ export default function Home() {
                     color: 'whiteAlpha.700',
                   }}
                   _focus={{backgroundColor: 'transparent'}}
-                  onClick={() => signOut()}
                 >
                   Sign Out
                 </MenuItem>
               </MenuList>
             </Menu>
           ) : (
-            <Button
-              colorScheme="purple"
-              bg="purple.300"
-              textColor="blackAlpha.900"
-              leftIcon={<FaGithub />}
-              onClick={() =>
-                signIn('github', {callbackUrl: 'http://localhost:3000/app'})
-              }
-            >
-              Sign in with Github
-            </Button>
+            <Auth supabase={supabase} />
           )}
         </Flex>
         <Stack
