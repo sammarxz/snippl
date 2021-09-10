@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from 'react'
+import {useState, useEffect} from 'react'
 import {motion, AnimateSharedLayout, AnimatePresence} from 'framer-motion'
 import {
   Box,
@@ -22,6 +22,7 @@ type collectionType = {
   id?: string
   name: string
   color: string
+  isEditing: boolean
 }
 
 type collectionsType = collectionType[]
@@ -61,13 +62,21 @@ export function Collections({...rest}) {
         .from('collection')
         .select('*')
         .eq('user_id', session?.user?.id)
+        .order('created_at', {ascending: true})
 
       if (!collection) {
         setCollections([])
         return
       }
 
-      setCollections(collection)
+      const updatedCollections = collection.map(item => {
+        return {
+          ...item,
+          isEditing: false,
+        }
+      })
+
+      setCollections(updatedCollections)
       dispatch({
         type: 'SELECT_COLLECTION',
         payload: collection[0].id,
@@ -86,6 +95,7 @@ export function Collections({...rest}) {
     const newCollectionToAdd = {
       name: newCollection,
       color,
+      isEditing: false,
     }
 
     const newCollectionList = [...collections, newCollectionToAdd]
@@ -110,6 +120,37 @@ export function Collections({...rest}) {
       type: 'SELECT_COLLECTION',
       payload: id,
     })
+  }
+
+  function handleSetEditCollection(index: number) {
+    const updatedCollections = collections.map(item => ({
+      ...item,
+      isEditing: false,
+    }))
+    updatedCollections[index].isEditing = true
+
+    setCollections(updatedCollections)
+  }
+
+  function handleCloseEditCollection() {
+    const updatedCollections = collections.map(item => ({
+      ...item,
+      isEditing: false,
+    }))
+
+    setCollections(updatedCollections)
+  }
+
+  async function handleSubmitEditForm(newValue: string, id: string) {
+    const updatedCollections = collections.map(item =>
+      item.id === id ? {...item, name: newValue, isEditing: false} : item,
+    )
+    setCollections(updatedCollections)
+
+    const {error} = await supabase
+      .from('collection')
+      .update({name: newValue})
+      .match({id})
   }
 
   // function handleDeleteCollection(title: string) {
@@ -190,7 +231,7 @@ export function Collections({...rest}) {
             <Stack spacing={1} mt={1}>
               {collections && (
                 <>
-                  {collections.map(({id, name, color}, index) => (
+                  {collections.map(({id, name, color, isEditing}, index) => (
                     <motion.button
                       initial={{opacity: 0}}
                       animate={{opacity: 1}}
@@ -199,9 +240,15 @@ export function Collections({...rest}) {
                       onClick={() => handleSetActiveCollection(id)}
                     >
                       <Collection
+                        index={index}
+                        id={id}
                         name={name}
                         color={color}
                         isActive={selectedCollection === id}
+                        isEditing={isEditing}
+                        setEditCollection={handleSetEditCollection}
+                        setCloseEditCollection={handleCloseEditCollection}
+                        submitEditForm={handleSubmitEditForm}
                       />
                     </motion.button>
                   ))}
