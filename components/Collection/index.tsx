@@ -3,19 +3,17 @@ import {Stack, Box, Heading, Flex} from '@chakra-ui/react'
 import {FaTimes} from 'react-icons/fa'
 
 type CollectionProps = {
-  title: string
+  name: string
   color: string
   isActive: boolean
   // onDelete: (title: string) => void
 }
 
 export const Collection = memo(function Collection({
-  title,
+  name,
   color,
   isActive,
 }: CollectionProps) {
-  console.log('render collection')
-
   return (
     <Stack
       bg={isActive ? 'whiteAlpha.200' : 'transparent'}
@@ -41,7 +39,7 @@ export const Collection = memo(function Collection({
               textOverflow: 'ellipsis',
             }}
           >
-            {title}
+            {name}
           </Heading>
         </Stack>
         {/* <button onClick={() => onDelete(title)}>

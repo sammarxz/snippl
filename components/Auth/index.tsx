@@ -7,8 +7,8 @@ type AuthProps = {
 }
 
 export const Auth = ({supabase}: AuthProps) => {
-  const signInWithGithub = () => {
-    supabase.auth.signIn({
+  const signInWithGithub = async () => {
+    await supabase.auth.signIn({
       provider: 'github',
     })
   }

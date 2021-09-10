@@ -2,6 +2,8 @@ import type {AppProps} from 'next/app'
 import Head from 'next/head'
 import {ChakraProvider, Box} from '@chakra-ui/react'
 
+import {AppProvider} from 'context/appContext'
+
 import useSupabase from 'utils/useSupabase'
 
 import {theme} from '../styles/theme'
@@ -16,11 +18,13 @@ function App({Component, pageProps}: AppProps) {
       <Head>
         <title>Snippl - Code Snippet Library for free</title>
       </Head>
-      <ChakraProvider theme={theme}>
-        <Box bg="black" color="whiteAlpha.700">
-          <Component session={session} supabase={supabase} {...pageProps} />
-        </Box>
-      </ChakraProvider>
+      <AppProvider>
+        <ChakraProvider theme={theme}>
+          <Box bg="black" color="whiteAlpha.700">
+            <Component session={session} supabase={supabase} {...pageProps} />
+          </Box>
+        </ChakraProvider>
+      </AppProvider>
     </>
   )
 }

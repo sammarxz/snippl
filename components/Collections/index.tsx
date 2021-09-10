@@ -1,5 +1,4 @@
 import {useState, useEffect, useCallback} from 'react'
-import {SupabaseClient} from '@supabase/supabase-js'
 import {motion, AnimateSharedLayout, AnimatePresence} from 'framer-motion'
 import {
   Box,
@@ -17,10 +16,12 @@ import {Collection} from 'components'
 
 import useSupabase from 'utils/useSupabase'
 
+import {useAppContext} from 'utils/useAppContext'
+
 type collectionType = {
+  id?: string
   name: string
   color: string
-  isActive: boolean
 }
 
 type collectionsType = collectionType[]
@@ -49,45 +50,51 @@ export function Collections({...rest}) {
   const [collections, setCollections] = useState<collectionsType | []>([])
   const [newCollection, setNewCollection] = useState('')
 
+  const {
+    state: {selectedCollection},
+    dispatch,
+  } = useAppContext()
+
   useEffect(() => {
     const getCollections = async () => {
-      let {data: collection} = await supabase.from('collection').select('*')
-      if (collection) {
-        const updatedCollections = collection.map(item => {
-          return {
-            ...item,
-            isActive: false,
-          }
-        })
+      let {data: collection} = await supabase
+        .from('collection')
+        .select('*')
+        .eq('user_id', session?.user?.id)
 
-        updatedCollections[0].isActive = true
-
-        setCollections(updatedCollections)
+      if (!collection) {
+        setCollections([])
         return
       }
 
-      setCollections([])
+      setCollections(collection)
+      dispatch({
+        type: 'SELECT_COLLECTION',
+        payload: collection[0].id,
+      })
     }
 
     getCollections()
-  }, [supabase])
+  }, [supabase, session, dispatch])
 
   async function handleCollectionFormSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
 
     const colorIndex = Math.round(Math.random() * (colors.length - 1))
     const color = colors[colorIndex]
+
     const newCollectionToAdd = {
       name: newCollection,
       color,
-      isActive: true,
     }
-    const newCollectionsList = collections.map(collection => {
-      collection.isActive = false
-      return collection
-    })
 
-    setCollections([...newCollectionsList, newCollectionToAdd])
+    const newCollectionList = [...collections, newCollectionToAdd]
+
+    setCollections(newCollectionList)
+
+    setNewCollection('')
+    setShowNewCollection.off()
+
     await supabase.from('collection').insert([
       {
         name: newCollection,
@@ -95,23 +102,13 @@ export function Collections({...rest}) {
         user_id: session?.user?.id,
       },
     ])
-
-    setNewCollection('')
-    setShowNewCollection.off()
   }
 
-  function handleSetActiveCollection(name: string) {
-    const newCollectionsList = collections.map(collection => {
-      collection.isActive = false
-      if (collection.name === name) {
-        collection.isActive = true
-      }
-      return {
-        ...collection,
-      }
+  function handleSetActiveCollection(id: string) {
+    dispatch({
+      type: 'SELECT_COLLECTION',
+      payload: id,
     })
-
-    setCollections(newCollectionsList)
   }
 
   // function handleDeleteCollection(title: string) {
@@ -190,17 +187,25 @@ export function Collections({...rest}) {
           </AnimatePresence>
           <AnimatePresence initial={false}>
             <Stack spacing={1} mt={1}>
-              {collections.map(({name, color, isActive}) => (
-                <motion.button
-                  initial={{opacity: 0}}
-                  animate={{opacity: 1}}
-                  key={name}
-                  layout
-                  onClick={() => handleSetActiveCollection(name)}
-                >
-                  <Collection title={name} color={color} isActive={isActive} />
-                </motion.button>
-              ))}
+              {collections && (
+                <>
+                  {collections.map(({id, name, color}, index) => (
+                    <motion.button
+                      initial={{opacity: 0}}
+                      animate={{opacity: 1}}
+                      key={name}
+                      layout
+                      onClick={() => handleSetActiveCollection(id)}
+                    >
+                      <Collection
+                        name={name}
+                        color={color}
+                        isActive={selectedCollection === id}
+                      />
+                    </motion.button>
+                  ))}
+                </>
+              )}
             </Stack>
           </AnimatePresence>
         </Stack>

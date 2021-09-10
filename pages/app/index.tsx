@@ -2,15 +2,16 @@ import {Grid} from '@chakra-ui/react'
 
 import {Header, Collections, Nav, Snippets, Editor} from 'components'
 
-export default function App() {
+import withAuth from 'utils/withAuth'
+import {useAppContext} from 'utils/useAppContext'
+
+function App() {
   return (
     <Grid
-      bg="bg.900"
+      bg="black"
       h="100vh"
       templateColumns="72px 1.5fr 2fr 3fr"
-      gridTemplateRows="72px auto"
       templateAreas={`
-       "header collections nav nav"
        "header collections snippets editor"
       `}
       position="fixed"
@@ -21,9 +22,10 @@ export default function App() {
     >
       <Header gridArea="header" />
       <Collections gridArea="collections" />
-      <Nav gridArea="nav" />
       <Snippets gridArea="snippets" />
       <Editor gridArea="editor" />
     </Grid>
   )
 }
+
+export default withAuth(App)

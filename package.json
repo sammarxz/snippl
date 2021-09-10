@@ -22,6 +22,7 @@
     "react-simple-code-editor": "^0.11.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^2.2.7",
     "@types/react": "17.0.16",
     "eslint": "7.32.0",
     "eslint-config-next": "11.0.1",
