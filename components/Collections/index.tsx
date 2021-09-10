@@ -104,7 +104,8 @@ export function Collections({...rest}) {
     ])
   }
 
-  function handleSetActiveCollection(id: string) {
+  function handleSetActiveCollection(id: string | undefined) {
+    if (!id) return
     dispatch({
       type: 'SELECT_COLLECTION',
       payload: id,
