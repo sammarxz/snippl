@@ -9,7 +9,6 @@ export function Nav({...rest}) {
       alignItems="center"
       justifyContent="space-between"
       borderBottom="1px"
-      borderBottomColor="whiteAlpha.200"
       {...rest}
     >
       <Search />

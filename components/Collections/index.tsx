@@ -164,7 +164,6 @@ export function Collections({...rest}) {
     <Box
       as="aside"
       borderRight="1px"
-      bg="whiteAlpha.100"
       borderRightColor="whiteAlpha.200"
       px={5}
       py={6}

@@ -9,7 +9,6 @@ export function Snippets({...rest}) {
     <Box
       as="aside"
       borderRight="1px"
-      bg="whiteAlpha.50"
       borderRightColor="whiteAlpha.200"
       px={5}
       py={6}
