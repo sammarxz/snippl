@@ -9,6 +9,7 @@ import useSupabase from 'utils/useSupabase'
 import {theme} from '../styles/theme'
 
 import 'styles/highlight.css'
+import 'styles/scrollbar.css'
 
 function App({Component, pageProps}: AppProps) {
   const {session, supabase} = useSupabase()

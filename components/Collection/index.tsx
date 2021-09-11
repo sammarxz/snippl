@@ -129,7 +129,7 @@ export const Collection = memo(function Collection({
           </Flex>
         )}
       </Stack>
-      <Modal isOpen={isOpen} onClose={onClose} size="xs">
+      <Modal variant="dark" isOpen={isOpen} onClose={onClose} size="xs">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Confirm Delete</ModalHeader>
