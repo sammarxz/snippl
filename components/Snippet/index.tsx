@@ -1,5 +1,7 @@
 import {Stack, Flex, Heading, Text, Badge} from '@chakra-ui/react'
 
+import {formatDate} from 'utils/formatDate'
+
 type SnippetProps = {
   title: string
   description: string
@@ -38,7 +40,7 @@ export function Snippet({
           {language}
         </Badge>
         <Text fontFamily="mono" fontSize="xs" textColor="whiteAlpha.500">
-          {created_at}
+          {formatDate(created_at, 'relative')}
         </Text>
       </Flex>
     </Stack>

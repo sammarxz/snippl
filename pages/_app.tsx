@@ -4,7 +4,7 @@ import {ChakraProvider, Box} from '@chakra-ui/react'
 
 import {AppProvider} from 'context/appContext'
 
-import useSupabase from 'utils/useSupabase'
+import useSupabase from 'hooks/useSupabase'
 
 import {theme} from '../styles/theme'
 

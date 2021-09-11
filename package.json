@@ -25,6 +25,7 @@
   "devDependencies": {
     "@types/js-cookie": "^2.2.7",
     "@types/react": "17.0.16",
+    "@types/uuid": "^8.3.1",
     "eslint": "7.32.0",
     "eslint-config-next": "11.0.1",
     "react-icons": "^4.2.0",

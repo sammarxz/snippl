@@ -1,4 +1,4 @@
-import {supabase} from 'utils/useSupabase'
+import {supabase} from 'hooks/useSupabase'
 import {NextApiRequest, NextApiResponse} from 'next'
 
 export default async function getUser(

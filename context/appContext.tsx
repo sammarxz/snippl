@@ -2,7 +2,7 @@ import {createContext, useReducer} from 'react'
 
 const defaultState = {
   selectedCollection: '',
-  selectedSnippet: 0,
+  selectedSnippet: '',
 }
 
 export interface SelectCollectionAction {
@@ -12,7 +12,7 @@ export interface SelectCollectionAction {
 
 export interface SelectSnippetAction {
   type: 'SELECT_SNIPPET'
-  payload: number
+  payload: string
 }
 
 export type Action = SelectSnippetAction | SelectCollectionAction

@@ -1,14 +1,13 @@
 import {useState, useEffect} from 'react'
-import Link from 'next/link'
-import {useRouter} from 'next/router'
 import {motion, AnimateSharedLayout, AnimatePresence} from 'framer-motion'
 import {Box, Stack, Heading, Flex, Icon} from '@chakra-ui/react'
 import {GoPlus, GoCode} from 'react-icons/go'
+import {v4 as uuidv4} from 'uuid'
 
 import {Snippet} from 'components'
 
-import useSupabase from 'utils/useSupabase'
-import {useAppContext} from 'utils/useAppContext'
+import useSupabase from 'hooks/useSupabase'
+import {useAppContext} from 'hooks/useAppContext'
 
 type snippetType = {
   id: string
@@ -16,15 +15,17 @@ type snippetType = {
   description: string
   lang: string
   collection_id: string
+  code?: string
   created_at: string
 }
 
 type snippetsType = snippetType[]
 
+type newSnippetType = Omit<snippetType, 'created_at'>
+
 export function Snippets({...rest}) {
   const {supabase} = useSupabase()
-  const {state} = useAppContext()
-  const Router = useRouter()
+  const {state, dispatch} = useAppContext()
   const [snippets, setSnippets] = useState<snippetsType | []>([])
 
   useEffect(() => {
@@ -39,31 +40,44 @@ export function Snippets({...rest}) {
         return
       }
 
-      if (snippet.length > 0) {
-        Router.push(`/app/${snippet[0]?.id}`)
-      } else {
-        Router.push(`/app`)
-      }
-
-      // const updatedCollections = snippet.map(item => {
-      //   return {
-      //     ...item,
-      //     isEditing: false,
-      //   }
-      // })
-
       setSnippets(snippet)
 
-      // dispatch({
-      //   type: 'SELECT_COLLECTION',
-      //   payload: collection[0].id,
-      // })
+      console.log('snippet', snippet[0]?.id)
+
+      dispatch({
+        type: 'SELECT_SNIPPET',
+        payload: snippet[0]?.id,
+      })
     }
 
     getSnippets()
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.selectedCollection, supabase])
+
+  async function handleNewSnippet() {
+    const newSnippetToAdd: newSnippetType = {
+      id: uuidv4(),
+      title: 'Snippet Title',
+      description: 'Snippet Description',
+      lang: 'javascript',
+      code: "//What's your code",
+      collection_id: state.selectedCollection,
+    }
+
+    const {data, error} = await supabase
+      .from('snippet')
+      .insert([newSnippetToAdd])
+
+    if (!error && data) {
+      const newSnippetList = [...snippets, ...data]
+      setSnippets(newSnippetList)
+
+      dispatch({
+        type: 'SELECT_SNIPPET',
+        payload: newSnippetList[newSnippetList.length - 1].id,
+      })
+    }
+  }
 
   return (
     <Box
@@ -89,7 +103,7 @@ export function Snippets({...rest}) {
                 </Box>
               </Stack>
             </Heading>
-            <button>
+            <button onClick={handleNewSnippet}>
               <Icon as={GoPlus} color="whiteAlpha.800" />
             </button>
           </Flex>
@@ -106,17 +120,13 @@ export function Snippets({...rest}) {
                         key={id}
                         layout
                       >
-                        <Link href={`/app/${id}`} prefetch shallow>
-                          <a>
-                            <Snippet
-                              title={title}
-                              description={description}
-                              language={lang}
-                              created_at={created_at}
-                              isSelected
-                            />
-                          </a>
-                        </Link>
+                        <Snippet
+                          title={title}
+                          description={description}
+                          language={lang}
+                          created_at={created_at}
+                          isSelected={state.selectedSnippet === id}
+                        />
                       </motion.div>
                     ),
                   )}

@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import {ReactNode} from 'react'
 import {useRouter} from 'next/router'
-import useSupabase from './useSupabase'
+import useSupabase from '../hooks/useSupabase'
 
 export const withAuth = (WrappedComponent: ReactNode | any) => {
   return (props: JSX.IntrinsicAttributes) => {

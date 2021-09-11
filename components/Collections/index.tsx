@@ -14,8 +14,8 @@ import {GoPlus} from 'react-icons/go'
 
 import {Collection} from 'components'
 
-import useSupabase from 'utils/useSupabase'
-import {useAppContext} from 'utils/useAppContext'
+import useSupabase from 'hooks/useSupabase'
+import {useAppContext} from 'hooks/useAppContext'
 
 type collectionType = {
   id: string
