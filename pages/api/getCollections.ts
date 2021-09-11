@@ -1,4 +1,5 @@
 import {supabase} from 'utils/useSupabase'
+import {useAppContext} from 'utils/useAppContext'
 import {NextApiRequest, NextApiResponse} from 'next'
 
 export default async function getCollections(

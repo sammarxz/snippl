@@ -1,8 +1,9 @@
 /* eslint-disable react/display-name */
+import {ReactNode} from 'react'
 import {useRouter} from 'next/router'
 import useSupabase from './useSupabase'
 
-const withAuth = (WrappedComponent: React.FC) => {
+export const withAuth = (WrappedComponent: ReactNode | any) => {
   return (props: JSX.IntrinsicAttributes) => {
     if (typeof window !== 'undefined') {
       const {session} = useSupabase()

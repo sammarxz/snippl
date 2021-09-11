@@ -15,7 +15,6 @@ import {GoPlus} from 'react-icons/go'
 import {Collection} from 'components'
 
 import useSupabase from 'utils/useSupabase'
-
 import {useAppContext} from 'utils/useAppContext'
 
 type collectionType = {
@@ -65,7 +64,6 @@ export function Collections({...rest}) {
         .order('created_at', {ascending: true})
 
       if (!collection) {
-        setCollections([])
         return
       }
 
@@ -165,8 +163,7 @@ export function Collections({...rest}) {
       as="aside"
       borderRight="1px"
       borderRightColor="whiteAlpha.200"
-      px={5}
-      py={6}
+      p={5}
       overflowY="auto"
       {...rest}
     >

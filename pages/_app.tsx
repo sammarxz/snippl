@@ -21,9 +21,7 @@ function App({Component, pageProps}: AppProps) {
       </Head>
       <AppProvider>
         <ChakraProvider theme={theme}>
-          <Box bg="black" color="whiteAlpha.700">
-            <Component session={session} supabase={supabase} {...pageProps} />
-          </Box>
+          <Component session={session} supabase={supabase} {...pageProps} />
         </ChakraProvider>
       </AppProvider>
     </>

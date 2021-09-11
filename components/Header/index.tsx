@@ -12,12 +12,12 @@ export function Header({...rest}) {
       position="relative"
       {...rest}
     >
-      <Flex h={16} mt={1} alignItems="center" mx="auto" justifyContent="center">
+      <Flex h={12} mt={2} alignItems="center" mx="auto" justifyContent="center">
         <Image
           src="/img/logo-symbol.svg"
           alt="Logo Snippl"
-          width={25}
-          height={25}
+          width={22}
+          height={22}
         />
       </Flex>
     </Box>
