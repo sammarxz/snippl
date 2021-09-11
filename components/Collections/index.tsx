@@ -19,7 +19,7 @@ import useSupabase from 'utils/useSupabase'
 import {useAppContext} from 'utils/useAppContext'
 
 type collectionType = {
-  id?: string
+  id: string
   name: string
   color: string
   isEditing: boolean
@@ -92,26 +92,21 @@ export function Collections({...rest}) {
     const colorIndex = Math.round(Math.random() * (colors.length - 1))
     const color = colors[colorIndex]
 
-    const newCollectionToAdd = {
-      name: newCollection,
-      color,
-      isEditing: false,
-    }
-
-    const newCollectionList = [...collections, newCollectionToAdd]
-
-    setCollections(newCollectionList)
-
     setNewCollection('')
     setShowNewCollection.off()
 
-    await supabase.from('collection').insert([
+    const {data, error} = await supabase.from('collection').insert([
       {
         name: newCollection,
         color,
         user_id: session?.user?.id,
       },
     ])
+
+    if (!error && data) {
+      const newCollectionList = [...collections, ...data]
+      setCollections(newCollectionList)
+    }
   }
 
   function handleSetActiveCollection(id: string | undefined) {

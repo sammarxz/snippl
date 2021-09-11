@@ -6,7 +6,7 @@ import * as S from './styles'
 
 type CollectionProps = {
   index: number
-  id?: string
+  id: string
   name: string
   color: string
   isActive: boolean
@@ -35,7 +35,7 @@ export const Collection = memo(function Collection({
 
   const onSubmitEditForm = () => {
     if (!editValue.trim()) return
-    if (id) submitEditForm(editValue, id)
+    submitEditForm(editValue, id)
   }
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
