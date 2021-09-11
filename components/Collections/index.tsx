@@ -148,17 +148,17 @@ export function Collections({...rest}) {
       .match({id})
   }
 
-  // function handleDeleteCollection(title: string) {
-  //   // const newCollectionsList = collections.filter(
-  //   //   collection => collection.title !== title,
-  //   // )
-  //   // console.log(title)
-  //   // console.log(newCollectionsList)
-  //   setCollections(state =>
-  //     state.filter(collection => collection.title !== title),
-  //   )
-  //   console.log(collections)
-  // }
+  async function handleDeleteCollection(id: string) {
+    setCollections(item => item.filter(collection => collection.id !== id))
+    await supabase.from('collection').delete().eq('id', id)
+
+    const firstCollectionId = collections[0].id
+
+    dispatch({
+      type: 'SELECT_COLLECTION',
+      payload: firstCollectionId,
+    })
+  }
 
   return (
     <Box
@@ -244,6 +244,7 @@ export function Collections({...rest}) {
                         setEditCollection={handleSetEditCollection}
                         setCloseEditCollection={handleCloseEditCollection}
                         submitEditForm={handleSubmitEditForm}
+                        onDeleteCollection={handleDeleteCollection}
                       />
                     </motion.button>
                   ))}

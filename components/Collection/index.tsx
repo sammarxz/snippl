@@ -1,5 +1,22 @@
 import {memo, useState, useRef} from 'react'
-import {Stack, Box, Heading, Flex, Icon, Input} from '@chakra-ui/react'
+import {
+  Stack,
+  Box,
+  Heading,
+  Flex,
+  Icon,
+  Input,
+  Text,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from '@chakra-ui/react'
 import {FiEdit3, FiTrash, FiX} from 'react-icons/fi'
 
 import * as S from './styles'
@@ -14,6 +31,7 @@ type CollectionProps = {
   setEditCollection: (index: number) => void
   setCloseEditCollection: (index: number) => void
   submitEditForm: (value: string, id: string) => void
+  onDeleteCollection: (id: string) => void
 }
 
 export const Collection = memo(function Collection({
@@ -26,8 +44,10 @@ export const Collection = memo(function Collection({
   setEditCollection,
   setCloseEditCollection,
   submitEditForm,
+  onDeleteCollection,
 }: CollectionProps) {
   const [editValue, setEditValue] = useState(name)
+  const {isOpen, onOpen, onClose} = useDisclosure()
 
   const showEditForm = (index: number) => {
     setEditCollection(index)
@@ -102,13 +122,34 @@ export const Collection = memo(function Collection({
               >
                 <Icon fontSize="md" as={FiEdit3} />
               </button>
-              <button aria-label="remove collection">
+              <button aria-label="remove collection" onClick={onOpen}>
                 <Icon fontSize="md" as={FiTrash} />
               </button>
             </Box>
           </Flex>
         )}
       </Stack>
+      <Modal isOpen={isOpen} onClose={onClose} size="xs">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm Delete</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>
+              Are you sure you would like to delete collection{' '}
+              <strong>{name}</strong>?
+            </Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button mr={3} onClick={onClose}>
+              Cancel
+            </Button>
+            <Button colorScheme="red" onClick={() => onDeleteCollection(id)}>
+              Delete
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </S.Wrapper>
   )
 })
