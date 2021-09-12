@@ -1,8 +1,11 @@
 import {Stack, Flex, Heading, Text, Badge} from '@chakra-ui/react'
 
+import {useAppContext} from 'hooks/useAppContext'
+
 import {formatDate} from 'utils/formatDate'
 
 type SnippetProps = {
+  id: string
   title: string
   description: string
   created_at: string
@@ -11,15 +14,26 @@ type SnippetProps = {
 }
 
 export function Snippet({
+  id,
   title,
   description,
   created_at,
   language,
   isSelected = false,
 }: SnippetProps) {
+  const {dispatch} = useAppContext()
+
+  function setActiveSnippet(id: string) {
+    dispatch({
+      type: 'SELECT_SNIPPET',
+      payload: id,
+    })
+  }
+
   return (
     <Stack
       bg={isSelected ? 'whiteAlpha.200' : 'transparent'}
+      cursor="pointer"
       transition="ease"
       transitionProperty="all"
       transitionDuration=".6s"
@@ -28,6 +42,7 @@ export function Snippet({
       borderRadius="md"
       opacity={isSelected ? 1 : 0.4}
       _hover={{opacity: 1}}
+      onClick={() => setActiveSnippet(id)}
     >
       <Heading fontSize="lg" textColor="whiteAlpha.800">
         {title}

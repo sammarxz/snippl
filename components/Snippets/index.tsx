@@ -42,8 +42,6 @@ export function Snippets({...rest}) {
 
       setSnippets(snippet)
 
-      console.log('snippet', snippet[0]?.id)
-
       dispatch({
         type: 'SELECT_SNIPPET',
         payload: snippet[0]?.id,
@@ -121,6 +119,7 @@ export function Snippets({...rest}) {
                         layout
                       >
                         <Snippet
+                          id={id}
                           title={title}
                           description={description}
                           language={lang}

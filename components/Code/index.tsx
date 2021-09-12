@@ -61,43 +61,23 @@ function outputCode(code: string, language: Language) {
   )
 }
 
-function outputText(text: string) {
-  const lines = text.split(/\r?\n/)
-  return (
-    <pre
-      className="language-none"
-      style={{
-        margin: 0,
-        pointerEvents: 'none',
-        background: 'transparent',
-      }}
-    >
-      {lines.map((line: string, i: number) => (
-        <div key={i} className="token-line">
-          <span className="line-number" key={`n${i}`}>
-            {i + 1}
-          </span>
-          {line.length ? line : ' '}
-        </div>
-      ))}
-    </pre>
-  )
+type CodeType = {
+  code: string
+  lang: string
 }
 
-const initialCode = `// What's your code?
-console.log("Hello World")`
+export function Code({code, lang}: CodeType) {
+  const [codeContent, setCodeContent] = useState(code)
+  const [language, setLanguage] = useState<string>(lang)
 
-const defaultLanguage = 'javascript'
+  console.log('tá vindo code?', codeContent)
+  console.log('tá vindo lang?', language)
 
-export function Code() {
-  const [code, setCode] = useState(initialCode)
-  const [language, setLanguage] = useState<Language>(defaultLanguage)
+  // function highlight(value: string, lang: Language) {
+  //   return outputCode(value, lang)
+  // }
 
-  function highlight(value: string, lang: Language) {
-    return outputCode(value, lang)
-  }
-
-  const highlightValue = (value: string) => highlight(value, language)
+  // const highlightValue = (value: string) => highlight(value, language)
 
   return (
     <Box className="code-frame" bg="whiteAlpha.200" borderRadius="base" mt={2}>
@@ -108,7 +88,8 @@ export function Code() {
         p={3}
         mb={4}
       >
-        <Select
+        <span>{language}</span>
+        {/* <Select
           size="sm"
           variant="outline"
           borderColor="whiteAlpha.200"
@@ -117,17 +98,17 @@ export function Code() {
           w={120}
           onChange={e => setLanguage(e.target.value)}
         >
-          {Object.values(languages).map(language => (
+          {Object.values(languages).map(lang => (
             <option
-              key={language}
-              value={language}
-              selected={language === defaultLanguage}
+              key={lang}
+              value={lang}
+              selected={lang === language}
               style={{color: 'black'}}
             >
-              {language}
+              {lang}
             </option>
           ))}
-        </Select>
+        </Select> */}
         <IconButton
           variant="outline"
           colorScheme="whiteAlpha"
@@ -139,17 +120,7 @@ export function Code() {
         />
       </Flex>
       <Box px={3} pb={4}>
-        <Editor
-          value={code}
-          onValueChange={setCode}
-          highlight={highlightValue}
-          className="editor"
-          style={{
-            fontFamily: '"IBM Plex Mono", "Fira Mono", monospace',
-            fontSize: 14,
-            lineHeight: 1.6,
-          }}
-        />
+        <textarea value={code} />
       </Box>
     </Box>
   )
