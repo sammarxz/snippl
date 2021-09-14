@@ -8,7 +8,7 @@ function App() {
   return (
     <Grid
       h="100vh"
-      templateColumns="55px 1.5fr 1.8fr 3fr"
+      templateColumns="72px 1.5fr 1.8fr 3fr"
       templateAreas={`
        "header collections snippets editor"
       `}

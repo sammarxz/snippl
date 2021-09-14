@@ -58,7 +58,10 @@ export function Snippets({...rest}) {
       title: 'Snippet Title',
       description: 'Snippet Description',
       lang: 'javascript',
-      code: "//What's your code",
+      code: `
+        // what's your code?
+        console.log('Hello World');
+      `,
       collection_id: state.selectedCollection,
     }
 
@@ -82,7 +85,8 @@ export function Snippets({...rest}) {
       as="aside"
       borderRight="1px"
       borderRightColor="whiteAlpha.200"
-      p={5}
+      py={5}
+      px={8}
       overflowY="auto"
       {...rest}
     >

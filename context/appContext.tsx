@@ -1,8 +1,31 @@
 import {createContext, useReducer} from 'react'
 
-const defaultState = {
+export type SnippetType = {
+  id: string
+  title: string
+  description: string
+  lang: string
+  code: string
+  created_at: string
+  updated_at: string
+}
+
+const defaultState:{
+  selectedCollection: string,
+  selectedSnippet: string,
+  snippet: SnippetType
+} = {
   selectedCollection: '',
   selectedSnippet: '',
+  snippet: {
+    id: '',
+    title: '',
+    description: '',
+    lang: '',
+    code: '',
+    created_at: '',
+    updated_at: ''
+  }
 }
 
 export interface SelectCollectionAction {
@@ -15,7 +38,15 @@ export interface SelectSnippetAction {
   payload: string
 }
 
-export type Action = SelectSnippetAction | SelectCollectionAction
+export interface SetSnippetAction {
+  type: 'SET_SNIPPET'
+  payload: SnippetType
+}
+
+export type Action = 
+  SelectSnippetAction | 
+  SelectCollectionAction | 
+  SetSnippetAction
 export type State = typeof defaultState
 export type Dispatch = (action: Action) => void
 
@@ -30,6 +61,11 @@ function AppReducer(state: State, action: Action) {
       return {
         ...state,
         selectedSnippet: action.payload,
+      }
+    case 'SET_SNIPPET':
+      return {
+        ...state,
+        snippet: action.payload
       }
     default:
       return state

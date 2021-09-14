@@ -1,3 +1,4 @@
+import {useRouter} from 'next/router'
 import {Button} from '@chakra-ui/react'
 import {SupabaseClient} from '@supabase/supabase-js'
 import {FaGithub} from 'react-icons/fa'
@@ -7,16 +8,26 @@ type AuthProps = {
 }
 
 export const Auth = ({supabase}: AuthProps) => {
+  const router = useRouter()
+
   const signInWithGithub = async () => {
-    await supabase.auth.signIn({
+    const { user, session, error } = await supabase.auth.signIn({
       provider: 'github',
+    }, {
+      redirectTo: 'app'
     })
+
+    if (!error) {
+      console.log('ok')
+      router.push('app')
+    }
   }
 
   return (
     <Button
-      colorScheme="purple"
-      bg="purple.300"
+      colorScheme="green"
+      bg="green.200"
+      _hover={{bg: "green.300"}}
       textColor="blackAlpha.900"
       leftIcon={<FaGithub />}
       onClick={signInWithGithub}

@@ -1,67 +1,120 @@
 import {useEffect, useState} from 'react'
 import {
   Box,
-  Editable,
-  EditableInput,
-  EditablePreview,
+  Input,
   Textarea,
+  Flex,
+  Text,
+  Stack,
+  IconButton,
 } from '@chakra-ui/react'
+import {FaTrash} from 'react-icons/fa'
 
 import {Code} from 'components'
 
 import useSupabase from 'hooks/useSupabase'
 import {useAppContext} from 'hooks/useAppContext'
 
-type snippetType = {
-  id: string
-  title: string
-  description: string
-  lang: string
-  code: string
-  created_at: string
-  updated_at: string
-}
+import {formatDate} from 'utils/formatDate'
+
+import {SnippetType} from 'context/appContext'
 
 export function Editor({...rest}) {
   const {
     state: {selectedSnippet},
+    dispatch
   } = useAppContext()
   const {supabase} = useSupabase()
-  const [snippetData, setSnippetData] = useState<snippetType | null>(null)
+
+  const [snippetData, setSnippetData] = useState<SnippetType | null>(null)
 
   useEffect(() => {
     const getSnippet = async () => {
-      const {data: snippet, error} = await supabase
-        .from('snippet')
-        .select('*')
-        .eq('id', selectedSnippet)
-
-      if (!error && snippet) {
-        setSnippetData(snippet[0])
+      if (selectedSnippet) {
+        const {data: snippet} = await supabase
+          .from('snippet')
+          .select('*')
+          .eq('id', selectedSnippet)
+  
+        if (snippet) {
+          setSnippetData(snippet[0])
+          dispatch({
+            type: 'SET_SNIPPET',
+            payload: snippet[0]
+          })
+        }
       }
     }
 
     getSnippet()
-  }, [selectedSnippet, supabase])
+  }, [selectedSnippet, supabase, dispatch])
+
+  function handleChange(value:string, type:keyof SnippetType) {
+    if (snippetData && type) {
+      const updatedSnippet = {
+        ...snippetData,
+        [type]: value
+      }
+      setSnippetData(updatedSnippet)
+      saveSnippet(updatedSnippet)
+    }
+  }
+
+  function saveSnippet(snippet:SnippetType) {
+    // TODO: update Snippet in supabase after every 3 seconds
+    dispatch({
+      type: 'SET_SNIPPET',
+      payload: snippet
+    })
+    console.log(snippetData)
+    // console.log(snippetData)
+  }
 
   return (
-    <Box as="section" px={8} py={4} overflowY="auto" {...rest}>
-      {snippetData && (
+    <Box as="section" px={8} py={5} overflowY="auto" {...rest}>
+      {snippetData && selectedSnippet && (
         <>
-          <h1>{snippetData.title}</h1>
+          <Flex align="center" justify="space-between">
+            <Stack spacing={1} flex={1}>
+              <Input 
+                variant="unstyled" 
+                size="lg"
+                isFullWidth
+                fontSize="xl" 
+                color="whiteAlpha.900" 
+                fontWeight="bold" 
+                value={snippetData.title}
+                placeholder="Snippet Title"
+                onChange={(e) => handleChange(e.target.value, 'title')}
+              />
+              <Text fontSize="sm">
+                last modification: 
+                {formatDate(snippetData.updated_at, 'relative')}
+              </Text>
+            </Stack>
+            <IconButton
+              colorScheme="red"
+              bg="red.300"
+              _hover={{bg: 'red.500'}}
+              aria-label="Delete Snippet"
+              size="sm"
+              icon={<FaTrash />}
+            />
+          </Flex>
           <Textarea
             isRequired
             variant="unstyled"
             fontFamily="mono"
             textColor="whiteAlpha.700"
             resize="vertical"
-            rows={1}
+            rows={2}
             value={snippetData.description}
+            onChange={(e) => handleChange(e.target.value, 'description')}
             placeholder="// Snippet Description"
             _placeholder={{color: 'whiteAlpha.500'}}
             my={4}
           />
-          <Code code={snippetData.code} lang={snippetData.lang} />
+          <Code onChange={handleChange} />
         </>
       )}
     </Box>

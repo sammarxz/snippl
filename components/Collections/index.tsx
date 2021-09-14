@@ -163,7 +163,8 @@ export function Collections({...rest}) {
       as="aside"
       borderRight="1px"
       borderRightColor="whiteAlpha.200"
-      p={5}
+      py={5}
+      px={8}
       overflowY="auto"
       {...rest}
     >

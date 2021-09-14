@@ -1,10 +1,14 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {Box, Flex, Select, IconButton} from '@chakra-ui/react'
 import {IoIosCopy} from 'react-icons/io'
 import Editor from 'react-simple-code-editor'
 import Highlight, {defaultProps, Language} from 'prism-react-renderer'
 import Token from 'prism-react-renderer'
 import TokenInputProps from 'prism-react-renderer'
+
+import {useAppContext} from 'hooks/useAppContext'
+
+import { SnippetType } from 'context/appContext'
 
 import {languages} from 'lib/prismic/languages'
 import minimal from 'lib/prismic/themes/minimal'
@@ -61,23 +65,20 @@ function outputCode(code: string, language: Language) {
   )
 }
 
-type CodeType = {
-  code: string
-  lang: string
+type CodeProps = {
+  onChange: (value:string, type:keyof SnippetType) => void
 }
 
-export function Code({code, lang}: CodeType) {
-  const [codeContent, setCodeContent] = useState(code)
-  const [language, setLanguage] = useState<string>(lang)
+export function Code({onChange}:CodeProps) {
+  const {state: {snippet}} = useAppContext()
+  
+  console.log('called')
 
-  console.log('tá vindo code?', codeContent)
-  console.log('tá vindo lang?', language)
+  function highlight(value: string, lang: Language) {
+    return outputCode(value, lang)
+  }
 
-  // function highlight(value: string, lang: Language) {
-  //   return outputCode(value, lang)
-  // }
-
-  // const highlightValue = (value: string) => highlight(value, language)
+  const highlightValue = (value: string) => highlight(value, snippet.lang)
 
   return (
     <Box className="code-frame" bg="whiteAlpha.200" borderRadius="base" mt={2}>
@@ -88,27 +89,26 @@ export function Code({code, lang}: CodeType) {
         p={3}
         mb={4}
       >
-        <span>{language}</span>
-        {/* <Select
+        <Select
           size="sm"
           variant="outline"
           borderColor="whiteAlpha.200"
           borderRadius="base"
-          value={language}
+          value={snippet.lang}
           w={120}
-          onChange={e => setLanguage(e.target.value)}
+          onChange={e => onChange(e.target.value, 'lang')}
         >
           {Object.values(languages).map(lang => (
             <option
               key={lang}
               value={lang}
-              selected={lang === language}
+              selected={lang === snippet.lang}
               style={{color: 'black'}}
             >
               {lang}
             </option>
           ))}
-        </Select> */}
+        </Select>
         <IconButton
           variant="outline"
           colorScheme="whiteAlpha"
@@ -120,7 +120,17 @@ export function Code({code, lang}: CodeType) {
         />
       </Flex>
       <Box px={3} pb={4}>
-        <textarea value={code} />
+        <Editor
+          value={snippet.code}
+          onValueChange={(value) => onChange(value, 'code')}
+          highlight={highlightValue}
+          className="editor"
+          style={{
+            fontFamily: '"IBM Plex Mono", "Fira Mono", monospace',
+            fontSize: 14,
+            lineHeight: 1.6,
+          }}
+        />
       </Box>
     </Box>
   )

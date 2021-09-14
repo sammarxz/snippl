@@ -55,7 +55,7 @@ export function Snippet({
           {language}
         </Badge>
         <Text fontFamily="mono" fontSize="xs" textColor="whiteAlpha.500">
-          {formatDate(created_at, 'relative')}
+          created at {formatDate(created_at, 'relative')}
         </Text>
       </Flex>
     </Stack>

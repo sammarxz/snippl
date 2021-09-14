@@ -111,7 +111,7 @@ export default function Home({session, supabase}: HomeProps) {
         <Box
           w="100%"
           h={40}
-          bg="purple.300"
+          bg="green.200"
           borderTopLeftRadius="3xl"
           borderTopRightRadius="3xl"
         ></Box>

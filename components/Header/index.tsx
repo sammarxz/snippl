@@ -1,7 +1,5 @@
-import Link from 'next/link'
 import Image from 'next/image'
-import {Box, Flex, Icon} from '@chakra-ui/react'
-import {FiBox} from 'react-icons/fi'
+import {Box, Flex} from '@chakra-ui/react'
 
 export function Header({...rest}) {
   return (
@@ -16,8 +14,8 @@ export function Header({...rest}) {
         <Image
           src="/img/logo-symbol.svg"
           alt="Logo Snippl"
-          width={22}
-          height={22}
+          width={28}
+          height={28}
         />
       </Flex>
     </Box>

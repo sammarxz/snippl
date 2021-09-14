@@ -5,6 +5,7 @@ export const languages = {
   cpp: 'cpp',
   css: 'css',
   elixir: 'elixir',
+  erlgan: 'erlang',
   git: 'git',
   go: 'go',
   graphql: 'graphql',
