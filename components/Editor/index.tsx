@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect} from 'react'
 import {
   Box,
   Input,
@@ -9,6 +9,7 @@ import {
   IconButton,
 } from '@chakra-ui/react'
 import {FaTrash} from 'react-icons/fa'
+import moment from 'moment'
 
 import {Code} from 'components'
 
@@ -16,13 +17,11 @@ import useSupabase from 'hooks/useSupabase'
 import {useAppContext} from 'hooks/useAppContext'
 import {useAutosave} from 'hooks/useAutosave'
 
-import {formatDate} from 'utils/formatDate'
-
 import {SnippetType} from 'context/appContext'
 
 export function Editor({...rest}) {
   const {
-    state: {selectedSnippet},
+    state: {selectedSnippet, snippets},
     dispatch
   } = useAppContext()
   const {supabase} = useSupabase()
@@ -54,13 +53,31 @@ export function Editor({...rest}) {
     if (snippetData && type) {
       const updatedSnippet = {
         ...snippetData,
-        [type]: value
+        [type]: value,
+        updated_at: new Date()
       }
+
+      updateSnippets(updatedSnippet)
       setSnippetData(updatedSnippet)
       dispatch({
         type: 'SET_SNIPPET',
         payload: updatedSnippet
       })
+      // dispatch({
+      //   type: 'SET_SNIPPETS',
+      //   payload: updatedSnippets
+      // })
+    }
+  }
+
+  function updateSnippets(updatedSnippet:SnippetType) {
+    let updatedSnippets = snippets
+    if (snippetData) {
+      const snippetToUpdateIndex = updatedSnippets.findIndex(snippet => 
+        snippet.id === snippetData.id
+      )
+      updatedSnippets[snippetToUpdateIndex] = updatedSnippet
+      console.log(updatedSnippet)
     }
   }
 
@@ -84,7 +101,7 @@ export function Editor({...rest}) {
               />
               <Text fontSize="sm">
                 last modification: 
-                {formatDate(snippetData.updated_at, 'relative')}
+                {moment(snippetData.updated_at).fromNow()}
               </Text>
             </Stack>
             <IconButton

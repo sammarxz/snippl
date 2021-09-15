@@ -26,7 +26,6 @@ type newSnippetType = Omit<snippetType, 'created_at'>
 export function Snippets({...rest}) {
   const {supabase} = useSupabase()
   const {state, dispatch} = useAppContext()
-  const [snippets, setSnippets] = useState<snippetsType | []>([])
 
   useEffect(() => {
     const getSnippets = async () => {
@@ -40,11 +39,13 @@ export function Snippets({...rest}) {
         return
       }
 
-      setSnippets(snippet)
-
       dispatch({
         type: 'SELECT_SNIPPET',
         payload: snippet[0]?.id,
+      })
+      dispatch({
+        type: 'SET_SNIPPETS',
+        payload: snippet,
       })
     }
 
@@ -69,12 +70,15 @@ console.log('Hello World');
       .insert([newSnippetToAdd])
 
     if (!error && data) {
-      const newSnippetList = [...snippets, ...data]
-      setSnippets(newSnippetList)
+      const newSnippetList = [...state.snippets, ...data]
 
       dispatch({
         type: 'SELECT_SNIPPET',
         payload: newSnippetList[newSnippetList.length - 1].id,
+      })
+      dispatch({
+        type: 'SET_SNIPPETS',
+        payload: newSnippetList,
       })
     }
   }
@@ -112,9 +116,9 @@ console.log('Hello World');
           </Flex>
           <AnimatePresence initial={false}>
             <Stack spacing={1} mt={1}>
-              {snippets && (
+              {state.snippets && (
                 <>
-                  {snippets.map(
+                  {state.snippets.map(
                     ({id, title, description, lang, created_at}) => (
                       <motion.div
                         initial={{opacity: 0}}

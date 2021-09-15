@@ -86,6 +86,10 @@ export function Collections({...rest}) {
         type: 'SELECT_COLLECTION',
         payload: collection[0]?.id,
       })
+      dispatch({
+        type: 'SET_SNIPPETS',
+        payload: collection
+      })
     }
 
     getCollections()
@@ -155,10 +159,10 @@ export function Collections({...rest}) {
   }
 
   async function handleDeleteCollection(id: string) {
-    setCollections(item => item.filter(collection => collection.id !== id))
     const {error} = await supabase.from('collection').delete().eq('id', id)
 
     if (!error) {
+      setCollections(item => item.filter(collection => collection.id !== id))
       const firstCollectionId = collections[0].id
 
       dispatch({
@@ -170,8 +174,8 @@ export function Collections({...rest}) {
     }
 
     toast({
-      title: "Error deleting the collection.",
-      description: "See if the collection still has snippets inside.",
+      title: "Error.",
+      description: "Only empty collections can be deleted.",
       status: "error",
       duration: 6000,
       isClosable: true,

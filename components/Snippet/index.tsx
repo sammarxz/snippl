@@ -4,6 +4,8 @@ import {useAppContext} from 'hooks/useAppContext'
 
 import {formatDate} from 'utils/formatDate'
 
+import * as S from './styles'
+
 type SnippetProps = {
   id: string
   title: string
@@ -44,18 +46,18 @@ export function Snippet({
       _hover={{opacity: 1}}
       onClick={() => setActiveSnippet(id)}
     >
-      <Heading fontSize="lg" textColor="whiteAlpha.800">
+      <S.Title fontSize="lg" textColor="whiteAlpha.800">
         {title}
-      </Heading>
-      <Text fontFamily="mono" fontSize="sm" textColor="whiteAlpha.500">
+      </S.Title>
+      <S.Description fontFamily="mono" fontSize="sm" textColor="whiteAlpha.500">
         {description}
-      </Text>
+      </S.Description>
       <Flex alignItems="center" justifyContent="space-between">
         <Badge variant="subtle" colorScheme="whiteAlpha">
           {language}
         </Badge>
         <Text fontFamily="mono" fontSize="xs" textColor="whiteAlpha.500">
-          created at {formatDate(created_at, 'relative')}
+          created at {formatDate(created_at, 'normal')}
         </Text>
       </Flex>
     </Stack>

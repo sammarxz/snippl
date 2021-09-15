@@ -7,16 +7,18 @@ export type SnippetType = {
   lang: string
   code: string
   created_at: string
-  updated_at: string
+  updated_at: Date | string
 }
 
 const defaultState:{
   selectedCollection: string,
   selectedSnippet: string,
+  snippets: SnippetType[],
   snippet: SnippetType
 } = {
   selectedCollection: '',
   selectedSnippet: '',
+  snippets: [],
   snippet: {
     id: '',
     title: '',
@@ -43,10 +45,16 @@ export interface SetSnippetAction {
   payload: SnippetType
 }
 
+export interface SetSnippetsAction {
+  type: 'SET_SNIPPETS'
+  payload: SnippetType[]
+}
+
 export type Action = 
   SelectSnippetAction | 
   SelectCollectionAction | 
-  SetSnippetAction
+  SetSnippetAction |
+  SetSnippetsAction
 export type State = typeof defaultState
 export type Dispatch = (action: Action) => void
 
@@ -66,6 +74,11 @@ function AppReducer(state: State, action: Action) {
       return {
         ...state,
         snippet: action.payload
+      }
+    case 'SET_SNIPPETS':
+      return {
+        ...state,
+        snippets: action.payload
       }
     default:
       return state

@@ -10,7 +10,7 @@ import {useAppContext} from 'hooks/useAppContext'
 import { SnippetType } from 'context/appContext'
 
 import {languages} from 'lib/prismic/languages'
-import minimal from 'lib/prismic/themes/minimal'
+import snippl from 'lib/prismic/themes/snippl'
 
 function renderToken(
   getTokenProps: ({
@@ -34,7 +34,7 @@ function outputCode(code: string, language: Language) {
       {...defaultProps}
       code={code}
       language={language}
-      theme={minimal}
+      theme={snippl}
     >
       {({className, style, tokens, getLineProps, getTokenProps}) => (
         <pre
@@ -77,6 +77,10 @@ export function Code({onChange}:CodeProps) {
 
   const highlightValue = (value: string) => highlight(value, snippet.lang)
 
+  function copyCodeToClipboard() {
+    navigator.clipboard.writeText(snippet.code);
+  }
+
   return (
     <Box className="code-frame" bg="whiteAlpha.200" borderRadius="base" mt={2}>
       <Flex
@@ -114,6 +118,7 @@ export function Code({onChange}:CodeProps) {
           fontSize="16px"
           size="sm"
           icon={<IoIosCopy />}
+          onClick={copyCodeToClipboard}
         />
       </Flex>
       <Box px={3} pb={4}>
