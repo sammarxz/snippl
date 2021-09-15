@@ -1,34 +1,19 @@
-import {Box, Flex, Select, IconButton} from '@chakra-ui/react'
+import {Box, Flex, Select, IconButton, useToast} from '@chakra-ui/react'
 import {IoIosCopy} from 'react-icons/io'
 import Editor from 'react-simple-code-editor'
-import Highlight, {defaultProps, Language} from 'prism-react-renderer'
-import Token from 'prism-react-renderer'
-import TokenInputProps from 'prism-react-renderer'
+import Highlight, {defaultProps} from 'prism-react-renderer'
 
 import {useAppContext} from 'hooks/useAppContext'
-
-import { SnippetType } from 'context/appContext'
 
 import {languages} from 'lib/prismic/languages'
 import snippl from 'lib/prismic/themes/snippl'
 
-function renderToken(
-  getTokenProps: ({
-    token,
-    key,
-  }: {
-    token: string | Token | Highlight | TokenInputProps
-    key: string
-  }) => JSX.Element,
-  token: string | Token | Highlight | TokenInputProps,
-  key: string,
-) {
+function renderToken(getTokenProps, token, key) {
   const props = getTokenProps({token, key})
-
   return <span {...props} />
 }
 
-function outputCode(code: string, language: Language) {
+function outputCode(code, language) {
   return (
     <Highlight
       {...defaultProps}
@@ -46,7 +31,7 @@ function outputCode(code: string, language: Language) {
             background: 'transparent',
           }}
         >
-          {tokens.map((line, i: number) => (
+          {tokens.map((line, i) => (
             <div key={i} {...getLineProps({line, key: i})}>
               {[
                 <span className="line-number" key={`n${i}`}>
@@ -64,21 +49,25 @@ function outputCode(code: string, language: Language) {
   )
 }
 
-type CodeProps = {
-  onChange: (value:string, type:keyof SnippetType) => void
-}
-
-export function Code({onChange}:CodeProps) {
+export function Code({onChange}) {
   const {state: {snippet}} = useAppContext()
+  const toast = useToast()
 
-  function highlight(value: string, lang: Language) {
+  function highlight(value, lang) {
     return outputCode(value, lang)
   }
 
-  const highlightValue = (value: string) => highlight(value, snippet.lang)
+  const highlightValue = (value) => highlight(value, snippet.lang)
 
   function copyCodeToClipboard() {
     navigator.clipboard.writeText(snippet.code);
+    toast({
+      title: 'Copied.',
+      description: 'Happy coding',
+      status: 'success',
+      duration: 1000,
+      isClosable: true,
+    })
   }
 
   return (

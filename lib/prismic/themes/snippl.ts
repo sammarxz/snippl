@@ -45,7 +45,7 @@ var theme = {
     {
       types: ['keyword', 'variable'],
       style: {
-        color: '#68D391',
+        color: '#9AE6B4',
         tyle: 'italic',
       },
     },

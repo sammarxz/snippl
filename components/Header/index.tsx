@@ -35,7 +35,7 @@ export function Header({...rest}) {
       position="relative"
       {...rest}
     >
-      <Stack spacing={5} mt={4} alignItems="center" mx="auto" justifyContent="center">
+      <Stack spacing={6} mt={4} alignItems="center" mx="auto" justifyContent="center">
         <Image
           src="/img/logo-symbol.svg"
           alt="Logo Snippl"
