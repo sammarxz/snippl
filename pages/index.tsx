@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 import {Session, SupabaseClient} from '@supabase/supabase-js'
 import Image from 'next/image'
 import Link from 'next/link'
+import {GrFormNextLink} from 'react-icons/gr'
 import {
   Container,
   Box,
@@ -9,11 +10,7 @@ import {
   Stack,
   Heading,
   Text,
-  Avatar,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
+  Button
 } from '@chakra-ui/react'
 
 import {Auth} from 'components'
@@ -54,34 +51,17 @@ export default function Home({session, supabase}: HomeProps) {
             </a>
           </Link>
           {loggedIn ? (
-            <Menu matchWidth placement="bottom-end">
-              <MenuButton>
-                <Box as="span" mr={4}>
-                  Hello,{' '}
-                  <Box as="span" color="white" fontWeight="semibold">
-                    {session?.user?.user_metadata.user_name}
-                  </Box>
-                </Box>
-                <Avatar
-                  name={session?.user?.user_metadata.user_name}
-                  src={session?.user?.user_metadata.avatar_url}
-                  size="sm"
-                />
-              </MenuButton>
-              <MenuList bg="whiteAlpha.100" borderColor="whiteAlpha.200">
-                <MenuItem
-                  textColor="whiteAlpha.600"
-                  _hover={{
-                    backgroundColor: 'transparent',
-                    color: 'whiteAlpha.700',
-                  }}
-                  _focus={{backgroundColor: 'transparent'}}
-                  onClick={logOut}
-                >
-                  Sign Out
-                </MenuItem>
-              </MenuList>
-            </Menu>
+            <Link href="/app" passHref>
+              <Button 
+                colorScheme="green"
+                bg="green.200"
+                _hover={{bg: "green.300"}}
+                textColor="blackAlpha.900"
+                rightIcon={<GrFormNextLink />}
+              >
+                Go to App
+              </Button>
+            </Link>
           ) : (
             <Auth supabase={supabase} />
           )}

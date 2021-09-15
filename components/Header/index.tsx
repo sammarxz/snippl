@@ -1,7 +1,32 @@
 import Image from 'next/image'
-import {Box, Flex} from '@chakra-ui/react'
+import {
+  Box, 
+  Stack, 
+  Avatar, 
+  Menu, 
+  MenuButton, 
+  MenuList, 
+  MenuItem,
+  Flex,
+  Icon,
+} from '@chakra-ui/react'
+import {CgLogOut} from 'react-icons/cg'
+
+import useSupabase from 'hooks/useSupabase'
+import React from 'react'
 
 export function Header({...rest}) {
+  const {session, supabase} = useSupabase()
+  let user
+
+  if (session) {
+    user = session.user?.user_metadata
+  }
+
+  const logOut = async () => {
+    await supabase.auth.signOut()
+  }
+
   return (
     <Box
       as="header"
@@ -10,14 +35,43 @@ export function Header({...rest}) {
       position="relative"
       {...rest}
     >
-      <Flex h={12} mt={2} alignItems="center" mx="auto" justifyContent="center">
+      <Stack spacing={5} mt={4} alignItems="center" mx="auto" justifyContent="center">
         <Image
           src="/img/logo-symbol.svg"
           alt="Logo Snippl"
-          width={28}
-          height={28}
+          width={26}
+          height={26}
         />
-      </Flex>
+        {user && (
+          <Menu matchWidth placement="bottom-end">
+              <MenuButton zIndex={99}>
+                <Avatar
+                  name={user.user_name}
+                  src={user.avatar_url}
+                  size="sm"
+                />
+              </MenuButton>
+              <MenuList bg="modalBG" borderColor="whiteAlpha.200" zIndex={99}>
+                <MenuItem
+                  textColor="red.300"
+                  _hover={{
+                    backgroundColor: 'transparent',
+                    color: 'red.400',
+                  }}
+                  _focus={{backgroundColor: 'transparent'}}
+                  onClick={logOut}
+                >
+                  <Flex alignItems="center">
+                    <Icon as={CgLogOut} fontSize="xl" mr={1} />
+                    <Box as="span">
+                      Sign Out
+                    </Box>
+                  </Flex>
+                </MenuItem>
+              </MenuList>
+            </Menu>
+        )}
+      </Stack>
     </Box>
   )
 }
