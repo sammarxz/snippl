@@ -58,9 +58,8 @@ export function Snippets({...rest}) {
       title: 'Snippet Title',
       description: 'Snippet Description',
       lang: 'javascript',
-      code: `
-        // what's your code?
-        console.log('Hello World');
+      code: `// what's your code?
+console.log('Hello World');
       `,
       collection_id: state.selectedCollection,
     }
@@ -105,9 +104,11 @@ export function Snippets({...rest}) {
                 </Box>
               </Stack>
             </Heading>
-            <button onClick={handleNewSnippet}>
-              <Icon as={GoPlus} color="whiteAlpha.800" />
-            </button>
+            {state.selectedCollection && (
+              <button onClick={handleNewSnippet}>
+                <Icon as={GoPlus} color="whiteAlpha.800" />
+              </button>
+            )}
           </Flex>
           <AnimatePresence initial={false}>
             <Stack spacing={1} mt={1}>
