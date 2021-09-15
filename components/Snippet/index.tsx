@@ -3,8 +3,6 @@ import moment from 'moment'
 
 import {useAppContext} from 'hooks/useAppContext'
 
-import {formatDate} from 'utils/formatDate'
-
 import * as S from './styles'
 
 type SnippetProps = {

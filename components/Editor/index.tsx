@@ -77,7 +77,40 @@ export function Editor({...rest}) {
         snippet.id === snippetData.id
       )
       updatedSnippets[snippetToUpdateIndex] = updatedSnippet
-      console.log(updatedSnippet)
+    }
+  }
+
+  async function handleDeleteSnippet(snippetId:string) {
+    const { data, error } = await supabase
+      .from('snippet')
+      .delete()
+      .eq('id', snippetId)
+
+    if (!error) {
+      const updatedSnippets = snippets.filter(snippet => snippet.id !== snippetId)
+      dispatch({
+        type: 'SET_SNIPPETS',
+        payload: updatedSnippets
+      })
+      if (updatedSnippets.length > 0) {
+        dispatch({
+          type: 'SELECT_SNIPPET',
+          payload: updatedSnippets[0].id
+        })
+        dispatch({
+          type: 'SET_SNIPPET',
+          payload: updatedSnippets[0]
+        })
+      } else {
+        dispatch({
+          type: 'SELECT_SNIPPET',
+          payload: ''
+        })
+        // dispatch({
+        //   type: 'SET_SNIPPET',
+        //   payload: ''
+        // })
+      }
     }
   }
 
@@ -111,6 +144,7 @@ export function Editor({...rest}) {
               aria-label="Delete Snippet"
               size="sm"
               icon={<FaTrash />}
+              onClick={() => handleDeleteSnippet(snippetData.id)}
             />
           </Flex>
           <Textarea
