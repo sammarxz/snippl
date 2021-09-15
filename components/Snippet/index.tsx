@@ -1,4 +1,5 @@
-import {Stack, Flex, Heading, Text, Badge} from '@chakra-ui/react'
+import {Stack, Flex, Text, Badge} from '@chakra-ui/react'
+import moment from 'moment'
 
 import {useAppContext} from 'hooks/useAppContext'
 
@@ -57,7 +58,7 @@ export function Snippet({
           {language}
         </Badge>
         <Text fontFamily="mono" fontSize="xs" textColor="whiteAlpha.500">
-          created at {formatDate(created_at, 'normal')}
+          created at {moment(created_at).fromNow()}
         </Text>
       </Flex>
     </Stack>
