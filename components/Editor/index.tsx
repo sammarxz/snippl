@@ -14,6 +14,7 @@ import {Code} from 'components'
 
 import useSupabase from 'hooks/useSupabase'
 import {useAppContext} from 'hooks/useAppContext'
+import {useAutosave} from 'hooks/useAutosave'
 
 import {formatDate} from 'utils/formatDate'
 
@@ -26,7 +27,7 @@ export function Editor({...rest}) {
   } = useAppContext()
   const {supabase} = useSupabase()
 
-  const [snippetData, setSnippetData] = useState<SnippetType | null>(null)
+  const [snippetData, setSnippetData] = useAutosave<SnippetType | null>(null)
 
   useEffect(() => {
     const getSnippet = async () => {
@@ -47,7 +48,7 @@ export function Editor({...rest}) {
     }
 
     getSnippet()
-  }, [selectedSnippet, supabase, dispatch])
+  }, [selectedSnippet, supabase, dispatch, setSnippetData])
 
   function handleChange(value:string, type:keyof SnippetType) {
     if (snippetData && type) {
@@ -56,18 +57,11 @@ export function Editor({...rest}) {
         [type]: value
       }
       setSnippetData(updatedSnippet)
-      saveSnippet(updatedSnippet)
+      dispatch({
+        type: 'SET_SNIPPET',
+        payload: updatedSnippet
+      })
     }
-  }
-
-  function saveSnippet(snippet:SnippetType) {
-    // TODO: update Snippet in supabase after every 3 seconds
-    dispatch({
-      type: 'SET_SNIPPET',
-      payload: snippet
-    })
-    console.log(snippetData)
-    // console.log(snippetData)
   }
 
   return (
@@ -86,6 +80,7 @@ export function Editor({...rest}) {
                 value={snippetData.title}
                 placeholder="Snippet Title"
                 onChange={(e) => handleChange(e.target.value, 'title')}
+                autoFocus
               />
               <Text fontSize="sm">
                 last modification: 

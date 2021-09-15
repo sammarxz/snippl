@@ -1,4 +1,3 @@
-import {useState, useEffect} from 'react'
 import {Box, Flex, Select, IconButton} from '@chakra-ui/react'
 import {IoIosCopy} from 'react-icons/io'
 import Editor from 'react-simple-code-editor'
@@ -71,8 +70,6 @@ type CodeProps = {
 
 export function Code({onChange}:CodeProps) {
   const {state: {snippet}} = useAppContext()
-  
-  console.log('called')
 
   function highlight(value: string, lang: Language) {
     return outputCode(value, lang)

@@ -8,6 +8,7 @@ import {
   Icon,
   Input,
   useBoolean,
+  useToast,
 } from '@chakra-ui/react'
 import {IoFolder} from 'react-icons/io5'
 import {GoPlus} from 'react-icons/go'
@@ -50,6 +51,8 @@ export function Collections({...rest}) {
   const [collections, setCollections] = useState<collectionsType | []>([])
   const [newCollection, setNewCollection] = useState('')
 
+  const toast = useToast()
+
   const {
     state: {selectedCollection},
     dispatch,
@@ -64,6 +67,10 @@ export function Collections({...rest}) {
         .order('created_at', {ascending: true})
 
       if (!collection) {
+        dispatch({
+          type: 'SELECT_COLLECTION',
+          payload: '',
+        })
         return
       }
 
@@ -77,7 +84,7 @@ export function Collections({...rest}) {
       setCollections(updatedCollections)
       dispatch({
         type: 'SELECT_COLLECTION',
-        payload: collection[0].id,
+        payload: collection[0]?.id,
       })
     }
 
@@ -104,6 +111,7 @@ export function Collections({...rest}) {
     if (!error && data) {
       const newCollectionList = [...collections, ...data]
       setCollections(newCollectionList)
+      handleSetActiveCollection(data[0]?.id)
     }
   }
 
@@ -148,13 +156,25 @@ export function Collections({...rest}) {
 
   async function handleDeleteCollection(id: string) {
     setCollections(item => item.filter(collection => collection.id !== id))
-    await supabase.from('collection').delete().eq('id', id)
+    const {error} = await supabase.from('collection').delete().eq('id', id)
 
-    const firstCollectionId = collections[0].id
+    if (!error) {
+      const firstCollectionId = collections[0].id
 
-    dispatch({
-      type: 'SELECT_COLLECTION',
-      payload: firstCollectionId,
+      dispatch({
+        type: 'SELECT_COLLECTION',
+        payload: firstCollectionId,
+      })
+
+      return
+    }
+
+    toast({
+      title: "Error deleting the collection.",
+      description: "See if the collection still has snippets inside.",
+      status: "error",
+      duration: 6000,
+      isClosable: true,
     })
   }
 
@@ -227,7 +247,7 @@ export function Collections({...rest}) {
                     <motion.button
                       initial={{opacity: 0}}
                       animate={{opacity: 1}}
-                      key={name}
+                      key={id}
                       layout
                       onClick={() => handleSetActiveCollection(id)}
                     >

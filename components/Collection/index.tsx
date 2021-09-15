@@ -131,7 +131,7 @@ export const Collection = memo(function Collection({
       </Stack>
       <Modal variant="dark" isOpen={isOpen} onClose={onClose} size="xs">
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg="modalBG" textColor="whiteAlpha.600">
           <ModalHeader>Confirm Delete</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -141,7 +141,7 @@ export const Collection = memo(function Collection({
             </Text>
           </ModalBody>
           <ModalFooter>
-            <Button mr={3} onClick={onClose}>
+            <Button colorScheme="whiteAlpha" mr={3} onClick={onClose}>
               Cancel
             </Button>
             <Button colorScheme="red" onClick={() => onDeleteCollection(id)}>

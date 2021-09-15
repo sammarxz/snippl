@@ -14,6 +14,9 @@ export const theme = extendTheme({
     body: 'IBM Plex Sans, system-ui, sans-serif',
     mono: 'IBM Plex Mono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
   },
+  colors: {
+    modalBG: '#131313',
+  },
   components: {
     Modal: {
       defaultProps: {
