@@ -7,6 +7,15 @@ import {
   Text,
   Stack,
   IconButton,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from '@chakra-ui/react'
 import {FaTrash} from 'react-icons/fa'
 import moment from 'moment'
@@ -25,8 +34,8 @@ export function Editor({...rest}) {
     dispatch
   } = useAppContext()
   const {supabase} = useSupabase()
-
   const [snippetData, setSnippetData] = useAutosave<SnippetType | null>(null)
+  const {isOpen, onOpen, onClose} = useDisclosure()
 
   useEffect(() => {
     const getSnippet = async () => {
@@ -111,6 +120,8 @@ export function Editor({...rest}) {
         //   payload: ''
         // })
       }
+
+      onClose()
     }
   }
 
@@ -139,13 +150,13 @@ export function Editor({...rest}) {
             </Stack>
             <IconButton
               colorScheme="whiteAlpha"
-              bg="whiteAlpha.200"
+              bg="transparent"
               color="whiteAlpha.600"
               _hover={{bg: 'whiteAlpha.300'}}
               aria-label="Delete Snippet"
-              size="sm"
+              size="xs"
               icon={<FaTrash />}
-              onClick={() => handleDeleteSnippet(snippetData.id)}
+              onClick={onOpen}
             />
           </Flex>
           <Textarea
@@ -161,6 +172,27 @@ export function Editor({...rest}) {
             my={4}
           />
           <Code onChange={handleChange} />
+          <Modal variant="dark" isOpen={isOpen} onClose={onClose} size="xs">
+            <ModalOverlay />
+            <ModalContent bg="modalBG" textColor="whiteAlpha.600">
+              <ModalHeader>Confirm Delete</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Text>
+                  Are you sure you would like to delete snippet{' '}
+                  <strong>{snippetData.title}</strong>?
+                </Text>
+              </ModalBody>
+              <ModalFooter>
+                <Button colorScheme="whiteAlpha" mr={3} onClick={onClose}>
+                  Cancel
+                </Button>
+                <Button colorScheme="red" onClick={() => handleDeleteSnippet(snippetData.id)}>
+                  Delete
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </>
       )}
     </Box>
