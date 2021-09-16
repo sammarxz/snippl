@@ -26,8 +26,8 @@ export const Auth = ({supabase}: AuthProps) => {
   return (
     <Button
       colorScheme="green"
-      bg="green.200"
-      _hover={{bg: "green.300"}}
+      bg="green.300"
+      _hover={{bg: "green.400"}}
       textColor="blackAlpha.900"
       leftIcon={<FaGithub />}
       onClick={signInWithGithub}

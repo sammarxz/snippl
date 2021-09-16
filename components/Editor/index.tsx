@@ -119,7 +119,7 @@ export function Editor({...rest}) {
       {snippetData && selectedSnippet && (
         <>
           <Flex align="center" justify="space-between">
-            <Stack spacing={1} flex={1}>
+            <Stack spacing={0} flex={1}>
               <Input 
                 variant="unstyled" 
                 size="lg"
@@ -138,9 +138,10 @@ export function Editor({...rest}) {
               </Text>
             </Stack>
             <IconButton
-              colorScheme="red"
-              bg="red.300"
-              _hover={{bg: 'red.500'}}
+              colorScheme="whiteAlpha"
+              bg="whiteAlpha.200"
+              color="whiteAlpha.600"
+              _hover={{bg: 'whiteAlpha.300'}}
               aria-label="Delete Snippet"
               size="sm"
               icon={<FaTrash />}
@@ -153,7 +154,6 @@ export function Editor({...rest}) {
             fontFamily="mono"
             textColor="whiteAlpha.700"
             resize="vertical"
-            rows={2}
             value={snippetData.description}
             onChange={(e) => handleChange(e.target.value, 'description')}
             placeholder="// Snippet Description"

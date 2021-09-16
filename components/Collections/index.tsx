@@ -187,8 +187,7 @@ export function Collections({...rest}) {
       as="aside"
       borderRight="1px"
       borderRightColor="whiteAlpha.200"
-      py={5}
-      px={8}
+      p={5}
       overflowY="auto"
       {...rest}
     >

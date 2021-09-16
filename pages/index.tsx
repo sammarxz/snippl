@@ -15,6 +15,8 @@ import {
 
 import {Auth} from 'components'
 
+import * as S from 'styles/home'
+
 type HomeProps = {
   session: Session
   supabase: SupabaseClient
@@ -54,8 +56,8 @@ export default function Home({session, supabase}: HomeProps) {
             <Link href="/app" passHref>
               <Button 
                 colorScheme="green"
-                bg="green.200"
-                _hover={{bg: "green.300"}}
+                bg="green.300"
+                _hover={{bg: "green.400"}}
                 textColor="blackAlpha.900"
                 rightIcon={<GrFormNextLink />}
               >
@@ -68,14 +70,14 @@ export default function Home({session, supabase}: HomeProps) {
         </Flex>
         <Stack
           as="header"
-          h="60vh"
+          h="55vh"
           alignItems="center"
           justifyContent="center"
           textAlign="center"
           spacing={4}
           mb={4}
         >
-          <Heading fontSize="7xl" textColor="whiteAlpha.900">
+          <Heading fontSize={["3xl", "5xl", "7xl"]} textColor="whiteAlpha.900">
             Code faster with a snippet library.
           </Heading>
           <Text textColor="whiteAlpha.600" fontSize="lg" maxW={600}>
@@ -87,15 +89,14 @@ export default function Home({session, supabase}: HomeProps) {
           </Text>
         </Stack>
       </Container>
-      <Container maxW="container.lg">
-        <Box
-          w="100%"
-          h={40}
-          bg="green.200"
-          borderTopLeftRadius="3xl"
-          borderTopRightRadius="3xl"
-        ></Box>
-      </Container>
+      <S.Preview maxW="container.lg">
+        <Image 
+          src="/img/preview.png"
+          alt="Snippl webapp preview"
+          width={1832}
+          height={738}
+        />
+      </S.Preview>
     </>
   )
 }
