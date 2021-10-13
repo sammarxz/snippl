@@ -1,5 +1,5 @@
 <h1 align="center">Welcome to Snippl 👋</h1>
-<p>
+<p align="center">
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
   <img alt="React Version" src="https://img.shields.io/badge/react-17-blue.svg" />
   <img src="https://img.shields.io/github/stars/sammarxz/snippl.svg?style=flat" />
@@ -12,9 +12,7 @@
     <img alt="Twitter: sammarxz" src="https://img.shields.io/twitter/follow/sammarxz.svg?style=social" />
   </a>
 </p>
-
-> Open Source code snippets library built with NextJS + Supabase + ChakraUI.
-
+  
 <br />
 <img src="https://github.com/sammarxz/snippl/blob/main/preview.png?raw=true" alt="Snippl code library preview" />
 <br />
