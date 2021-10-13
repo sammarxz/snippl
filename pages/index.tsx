@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react'
+import Head from 'next/head'
 import {Session, SupabaseClient} from '@supabase/supabase-js'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -29,12 +30,18 @@ export default function Home({session, supabase}: HomeProps) {
     setLoggedIn(!!session)
   }, [session])
 
-  const logOut = async () => {
-    await supabase.auth.signOut()
-  }
-
   return (
     <>
+      <Head>
+        <meta name="description" content="Code faster with a snippet library."/>
+        <meta property="og:title" content="Snippl - Code Snippets Library for free" />
+        <meta property="og:description" content="Code faster with a snippet library." />
+        <meta property="og:image" content="https://snippl.vercel.app/thumbnail.png" />
+        <meta property="og:url" content="https://snippl.vercel.app/" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="og:site_name" content="Snippl - Code Snippets Library for free" />
+        <meta name="twitter:image:alt" content="Code faster with a snippet library." />
+      </Head>
       <Container maxW="container.md" fontFamily="body">
         <Flex
           as="nav"

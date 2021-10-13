@@ -1,6 +1,6 @@
 import type {AppProps} from 'next/app'
 import Head from 'next/head'
-import {ChakraProvider, Box} from '@chakra-ui/react'
+import {ChakraProvider} from '@chakra-ui/react'
 
 import {AppProvider} from 'context/appContext'
 
@@ -18,6 +18,7 @@ function App({Component, pageProps}: AppProps) {
     <>
       <Head>
         <title>Snippl - Code Snippet Library for free</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" key="viewport" />
       </Head>
       <AppProvider>
         <ChakraProvider theme={theme}>
