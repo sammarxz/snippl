@@ -6,18 +6,7 @@ import {
   Flex,
   Text,
   Stack,
-  IconButton,
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
 } from '@chakra-ui/react'
-import {FaTrash} from 'react-icons/fa'
 import moment from 'moment'
 
 import {Code} from 'components'
@@ -35,7 +24,6 @@ export function Editor({...rest}) {
   } = useAppContext()
   const {supabase} = useSupabase()
   const [snippetData, setSnippetData] = useAutosave<SnippetType | null>(null)
-  const {isOpen, onOpen, onClose} = useDisclosure()
 
   useEffect(() => {
     const getSnippet = async () => {
@@ -44,7 +32,7 @@ export function Editor({...rest}) {
           .from('snippet')
           .select('*')
           .eq('id', selectedSnippet)
-  
+
         if (snippet) {
           setSnippetData(snippet[0])
           dispatch({
@@ -82,46 +70,10 @@ export function Editor({...rest}) {
   function updateSnippets(updatedSnippet:SnippetType) {
     let updatedSnippets = snippets
     if (snippetData) {
-      const snippetToUpdateIndex = updatedSnippets.findIndex(snippet => 
+      const snippetToUpdateIndex = updatedSnippets.findIndex(snippet =>
         snippet.id === snippetData.id
       )
       updatedSnippets[snippetToUpdateIndex] = updatedSnippet
-    }
-  }
-
-  async function handleDeleteSnippet(snippetId:string) {
-    const { data, error } = await supabase
-      .from('snippet')
-      .delete()
-      .eq('id', snippetId)
-
-    if (!error) {
-      const updatedSnippets = snippets.filter(snippet => snippet.id !== snippetId)
-      dispatch({
-        type: 'SET_SNIPPETS',
-        payload: updatedSnippets
-      })
-      if (updatedSnippets.length > 0) {
-        dispatch({
-          type: 'SELECT_SNIPPET',
-          payload: updatedSnippets[0].id
-        })
-        dispatch({
-          type: 'SET_SNIPPET',
-          payload: updatedSnippets[0]
-        })
-      } else {
-        dispatch({
-          type: 'SELECT_SNIPPET',
-          payload: ''
-        })
-        // dispatch({
-        //   type: 'SET_SNIPPET',
-        //   payload: ''
-        // })
-      }
-
-      onClose()
     }
   }
 
@@ -131,33 +83,23 @@ export function Editor({...rest}) {
         <>
           <Flex align="center" justify="space-between">
             <Stack spacing={0} flex={1}>
-              <Input 
-                variant="unstyled" 
+              <Input
+                variant="unstyled"
                 size="lg"
                 isFullWidth
-                fontSize="xl" 
-                color="whiteAlpha.900" 
-                fontWeight="bold" 
+                fontSize="xl"
+                color="whiteAlpha.900"
+                fontWeight="bold"
                 value={snippetData.title}
                 placeholder="Snippet Title"
                 onChange={(e) => handleChange(e.target.value, 'title')}
                 autoFocus
               />
               <Text fontSize="sm">
-                last modification: 
+                last modification:
                 {moment(snippetData.updated_at).fromNow()}
               </Text>
             </Stack>
-            <IconButton
-              colorScheme="whiteAlpha"
-              bg="transparent"
-              color="whiteAlpha.600"
-              _hover={{bg: 'whiteAlpha.300'}}
-              aria-label="Delete Snippet"
-              size="xs"
-              icon={<FaTrash />}
-              onClick={onOpen}
-            />
           </Flex>
           <Textarea
             isRequired
@@ -172,27 +114,6 @@ export function Editor({...rest}) {
             my={4}
           />
           <Code onChange={handleChange} />
-          <Modal variant="dark" isOpen={isOpen} onClose={onClose} size="xs">
-            <ModalOverlay />
-            <ModalContent bg="modalBG" textColor="whiteAlpha.600">
-              <ModalHeader>Confirm Delete</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <Text>
-                  Are you sure you would like to delete snippet{' '}
-                  <strong>{snippetData.title}</strong>?
-                </Text>
-              </ModalBody>
-              <ModalFooter>
-                <Button colorScheme="whiteAlpha" mr={3} onClick={onClose}>
-                  Cancel
-                </Button>
-                <Button colorScheme="red" onClick={() => handleDeleteSnippet(snippetData.id)}>
-                  Delete
-                </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
         </>
       )}
     </Box>
